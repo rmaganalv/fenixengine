@@ -1,0 +1,47 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:ctrl="clr-namespace:FenixEngine.Src.Control"
+             x:Class="FenixEngine.MainPage">
+
+
+    <!--<VerticalStackLayout Padding="10" Spacing="10">
+       
+        <Button Text="Atrás" Clicked="OnBackClicked"/>
+
+        <ScrollView>
+            <ctrl:FileTreeView x:Name="myFileTree" />
+        </ScrollView>
+    </VerticalStackLayout> -->      
+    
+    <!--<controls:SpectrumProgressBar
+        x:Name="AudioProgress"
+        HeightRequest="40"
+        FillColor="#FFEF5959"
+        EmptyColor="#FFF69797"
+        SpectrumLength="30"
+        CenterLabel="Generaldo..."
+        />-->
+
+    
+    <Grid RowDefinitions="Auto,*">
+
+        <Grid BackgroundColor="LightGray" HeightRequest="40">
+            <StackLayout Orientation="Horizontal" Padding="10">
+                <Button Text="Atrás" Clicked="OnBackClicked"/>
+                <ProgressBar Progress="0.5" WidthRequest="100"/>
+            </StackLayout>
+        </Grid>
+        <Grid BackgroundColor="LightGray" HeightRequest="40">
+             <StackLayout Orientation="Vertical" Padding="10">
+                <ctrl:FileTreeView Grid.Row="1" x:Name="myFileTree"/>
+            </StackLayout>           
+        </Grid>
+        
+        
+    </Grid>        
+
+
+  
+
+</ContentPage>

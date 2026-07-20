@@ -12,6 +12,9 @@
 //
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
+using System.Text;
+using System.Text.RegularExpressions;
+
 namespace AppCore.Generator.Generators;
 
 public static class Sanitizant
@@ -20,9 +23,10 @@ public static class Sanitizant
     {
         // Reemplaza caracteres especiales por sus equivalentes seguros
         var sanitized = 
-                    input.Replace("<", "&lt;")
-                    .Replace(">", "&gt;")
-                    .Replace("&", "&amp;")
+                    input
+                    //.Replace("<", "&lt;")
+                    //.Replace(">", "&gt;")
+                    //.Replace("&", "&amp;")
                     .Replace("\"", "&quot;")
                     .Replace("'", "&#39;")
                     .Replace("```csharp", "")
@@ -34,12 +38,42 @@ public static class Sanitizant
     }
 
     // Método auxiliar para extraer nombre de clase/enum
-    public static string ExtractName(string code, string keyword)
+    public static string? ExtractName(string code, string keyword)
     {
-        int idx = code.IndexOf(keyword);
-        if (idx == -1) return null;
+        if (string.IsNullOrWhiteSpace(code) || string.IsNullOrWhiteSpace(keyword))
+            return null;
 
-        var words = code.Substring(idx + keyword.Length).Trim().Split(' ');
-        return words?.Length > 0 ? words[0].Trim() : null;
+        var pattern = $@"\b{keyword}\s+([A-Za-z_][A-Za-z0-9_]*)";
+        var match = Regex.Match(code, pattern);
+
+        return match.Success ? match.Groups[1].Value : null;
     }
+
+
+    // Divide el código en fragmentos cada vez que detecta class/enum/interface
+    public static List<string> SplitByTypes(string code)
+    {
+        var fragments = new List<string>();
+        var lines = code.Split('\n');
+
+        var sb = new StringBuilder();
+        foreach (var line in lines)
+        {
+            if (line.Contains("class") || line.Contains("enum") || line.Contains("interface"))
+            {
+                if (sb.Length > 0)
+                {
+                    fragments.Add(sb.ToString());
+                    sb.Clear();
+                }
+            }
+            sb.AppendLine(line);
+        }
+
+        if (sb.Length > 0)
+            fragments.Add(sb.ToString());
+
+        return fragments;
+    }
+
 }

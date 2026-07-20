@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!-- Errors -->
+  <data name="100" xml:space="preserve">
+    <value>❌ General file operation error.</value>
+  </data>
+  <data name="101" xml:space="preserve">
+    <value>⚠️ Folder not found.</value>
+  </data>
+  <data name="102" xml:space="preserve">
+    <value>⚠️ No .cs files were generated.</value>
+  </data>
+
+  <!-- Processes -->
+  <data name="200" xml:space="preserve">
+    <value>⏳ Process started...</value>
+  </data>
+  <data name="201" xml:space="preserve">
+    <value>📁 Folder found.</value>
+  </data>
+  <data name="202" xml:space="preserve">
+    <value>📄 Reading specification file...</value>
+  </data>
+  <data name="203" xml:space="preserve">
+    <value>📄 Specification successfully read.</value>
+  </data>
+  <data name="204" xml:space="preserve">
+    <value>🔍 Validating folder...</value>
+  </data>
+  <data name="205" xml:space="preserve">
+    <value>📂 Validation completed.</value>
+  </data>
+
+  <!-- Generation -->
+  <data name="300" xml:space="preserve">
+    <value>✅ Generation started.</value>
+  </data>
+  <data name="301" xml:space="preserve">
+    <value>✅ File generated: </value>
+  </data>
+  <data name="302" xml:space="preserve">
+    <value>✅ Generation successfully completed.</value>
+  </data>
+</root>

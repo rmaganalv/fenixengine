@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <data name="Error" xml:space="preserve">
+    <value>❌ Error (default).</value>
+  </data>
+  <data name="Completed" xml:space="preserve">
+    <value>✅ Completed (default).</value>
+  </data>
+  <data name="Idle" xml:space="preserve">
+    <value>⏳ Idle (default).</value>
+  </data>
+</root>

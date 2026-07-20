@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!-- Errores -->
+  <data name="100" xml:space="preserve">
+    <value>❌ Error general en la operación de archivos.</value>
+  </data>
+  <data name="101" xml:space="preserve">
+    <value>⚠️ Carpeta no encontrada.</value>
+  </data>
+  <data name="102" xml:space="preserve">
+    <value>⚠️ No se generaron archivos .cs.</value>
+  </data>
+
+  <!-- Procesos -->
+  <data name="200" xml:space="preserve">
+    <value>⏳ Proceso iniciado...</value>
+  </data>
+  <data name="201" xml:space="preserve">
+    <value>📁 Carpeta encontrada.</value>
+  </data>
+  <data name="202" xml:space="preserve">
+    <value>📄 Leyendo archivo de especificación...</value>
+  </data>
+  <data name="203" xml:space="preserve">
+    <value>📄 Especificación leída correctamente.</value>
+  </data>
+  <data name="204" xml:space="preserve">
+    <value>🔍 Validando carpeta...</value>
+  </data>
+  <data name="205" xml:space="preserve">
+    <value>📂 Validación finalizada.</value>
+  </data>
+
+  <!-- Generación -->
+  <data name="300" xml:space="preserve">
+    <value>✅ Generación iniciada.</value>
+  </data>
+  <data name="301" xml:space="preserve">
+    <value>✅ Archivo generado: </value>
+  </data>
+  <data name="302" xml:space="preserve">
+    <value>✅ Generación completada con éxito.</value>
+  </data>
+</root>

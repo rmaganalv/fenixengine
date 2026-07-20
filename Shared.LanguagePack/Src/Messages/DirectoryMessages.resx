@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <data name="Error" xml:space="preserve">
+    <value>❌ Error during generation/validation.</value>
+  </data>
+  <data name="Completed" xml:space="preserve">
+    <value>✅ Generation/validation completed successfully.</value>
+  </data>
+  <data name="Idle" xml:space="preserve">
+    <value>⏳ Waiting to start generation/validation...</value>
+  </data>
+</root>

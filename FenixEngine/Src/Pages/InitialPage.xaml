@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="FenixEngine.Src.Pages.InitialPage">
+
+    <VerticalStackLayout
+        Spacing="25"
+        Padding="30"
+        VerticalOptions="Center">
+
+        <!-- Título Principal -->
+        <Label
+            Text="¡Hola, Mundo!"
+            FontSize="32"
+            HorizontalOptions="Center" />
+
+        <!-- Descripción -->
+        <Label
+            Text="Bienvenido a tu primera aplicación .NET MAUI"
+            FontSize="18"
+            HorizontalOptions="Center" />
+
+        <!-- Botón Interactivo -->
+        <Button
+            x:Name="CounterBtn"
+            Text="Haz clic aquí"
+            HorizontalOptions="Center" />
+    </VerticalStackLayout>
+
+</ContentPage>
