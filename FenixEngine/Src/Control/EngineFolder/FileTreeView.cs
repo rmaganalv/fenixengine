@@ -1,111 +1,107 @@
 
+using System.Collections.ObjectModel;
+
 namespace FenixEngine.Src.Control;
 // Control visual
-
-
 public class FileTreeView : ContentView
 {
-    public static readonly BindableProperty RootPathProperty =
-        BindableProperty.Create(nameof(RootPath), typeof(string), typeof(FileTreeView),
-            AppContext.BaseDirectory, propertyChanged: OnRootPathChanged);
-
-    public string RootPath
-    {
-        get => (string)GetValue(RootPathProperty);
-        set => SetValue(RootPathProperty, value);
-    }
-
-    private CollectionView _treeView;
+    private readonly ObservableCollection<FileNode> _flatList = new();
+    private readonly CollectionView _treeView;
 
     public FileTreeView()
     {
         _treeView = new CollectionView
         {
-            ItemTemplate = new DataTemplate(() =>
+            ItemsSource = _flatList,
+ItemTemplate = new DataTemplate(() =>
+{
+    var grid = new Grid { Padding = 4 };
+    grid.ColumnDefinitions.Add(new ColumnDefinition { Width = 30 });
+    grid.ColumnDefinitions.Add(new ColumnDefinition { Width = GridLength.Star });
+
+    var icon = new Image { WidthRequest = 20, HeightRequest = 20 };
+    icon.SetBinding(Image.SourceProperty, "Icon");
+
+    var label = new Label { VerticalOptions = LayoutOptions.Center };
+    label.SetBinding(Label.TextProperty, "Name");
+    label.SetBinding(Label.MarginProperty,
+        new Binding("Level", converter: new LevelToMarginConverter()));
+
+    grid.Add(icon);
+    grid.Add(label, 1, 0);
+
+    // Tap para expandir
+    var tap = new TapGestureRecognizer();
+    tap.Tapped += async (s, e) =>
+    {
+        if (grid.BindingContext is FileNode node && node.IsFolder)
+        {
+            if (!node.IsExpanded)
             {
-                var grid = new Grid { Padding = 4 };
-                grid.ColumnDefinitions.Add(new ColumnDefinition { Width = 30 });
-                grid.ColumnDefinitions.Add(new ColumnDefinition { Width = GridLength.Star });
+                node.IsExpanded = true;
+                await Task.Run(() => FileTreeLoader.LoadChildren(node));
+                MainThread.BeginInvokeOnMainThread(() => RefreshTree());
+            }
+            else
+            {
+                node.IsExpanded = false;
+                RefreshTree();
+            }
+        }
+    };
+    grid.GestureRecognizers.Add(tap);
 
-                var icon = new Image { WidthRequest = 20, HeightRequest = 20 };
-                icon.SetBinding(Image.SourceProperty, "Icon");
+    return grid;
+})
 
-                var label = new Label { VerticalOptions = LayoutOptions.Center };
-                label.SetBinding(Label.TextProperty, "Name");
-
-                grid.Add(icon);
-                grid.Add(label, 1, 0);
-
-                /*var tapGesture = new TapGestureRecognizer();
-                tapGesture.Tapped += (s, e) =>
-                {
-                    if (grid.BindingContext is FileNode node && node.IsFolder)
-                    {
-                        node.IsExpanded = !node.IsExpanded;
-                        if (node.IsExpanded && node.Children.Count == 0)
-                            FileTreeLoader.LoadChildren(node);
-                    }
-                };
-                grid.GestureRecognizers.Add(tapGesture);*/
-
-
-                var tapGesture = new TapGestureRecognizer
-                {
-                    NumberOfTapsRequired = 2 // ahora es doble clic
-                };
-
-                tapGesture.Tapped += (s, e) =>
-                {
-                    if (grid.BindingContext is FileNode node)
-                    {
-                        if (node.IsFolder)
-                        {
-                            // Cambiar la raíz a la carpeta seleccionada
-                            RootPath = node.Path ?? string.Empty;
-                        }
-                        else
-                        {
-                            // Aquí podrías abrir el archivo en tu editor
-                            // Por ahora solo mostramos el nombre
-                            Application.Current.MainPage.DisplayAlert("Archivo", $"Seleccionaste {node.Name ?? "" }", "OK");
-                        }
-                    }
-                };
-                grid.GestureRecognizers.Add(tapGesture);
-
-
-
-
-                return grid;
-            })
         };
 
         Content = _treeView;
-        LoadTree(RootPath);
     }
 
-    private static void OnRootPathChanged(BindableObject bindable, object oldValue, object newValue)
+    public void LoadTree(string path)
     {
-        var control = (FileTreeView)bindable;
-        control.LoadTree((string)newValue);
-    }
-
-    private void LoadTree(string path)
-    {
-        var rootNode = FileTreeLoader.Load(path);
-        _treeView.ItemsSource = rootNode.Children;
-    }
-    
-    public void GoBack()
-    {
-        if (string.IsNullOrEmpty(RootPath)) return;
-
-        var parent = Directory.GetParent(RootPath);
-        if (parent != null)
+        var root = new FileNode
         {
-            RootPath = parent.FullName;
-        }
+            Name = Path.GetFileName(path),
+            Path = path,
+            IsFolder = true,
+            Level = 0
+        };
+        _flatList.Clear();
+        _flatList.Add(root);
     }
+
+private void RefreshTree()
+{
+    var newList = new List<FileNode>();
+    Flatten(_flatList[0], newList);
+
+    _flatList.Clear();
+    foreach (var node in newList)
+        _flatList.Add(node);
+}
+
+
+    private void Flatten(FileNode node, List<FileNode> list)
+    {
+        list.Add(node);
+        if (node.IsExpanded)
+            foreach (var child in node.Children)
+                Flatten(child, list);
+    }
+
+public static string GetIconForFile(string filePath)
+{
+    var ext = Path.GetExtension(filePath).ToLower();
+    return ext switch
+    {
+        ".png" or ".jpg" or ".jpeg" => "image.png",
+        ".mp3" or ".wav" => "audio.png",
+        ".txt" => "text.png",
+        _ => "file.png"
+    };
+}
 
 
 }

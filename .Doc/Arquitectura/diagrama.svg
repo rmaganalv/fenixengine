@@ -1,0 +1,56 @@
+<svg viewBox="0 0 800 500" xmlns="http://www.w3.org/2000/svg">
+  <!-- Background -->
+  <rect width="800" height="500" fill="#f8fafc" />
+  
+  <!-- Title -->
+  <text x="400" y="40" font-family="Arial, sans-serif" font-size="22" font-weight="bold" text-anchor="middle" fill="#1e293b">
+    Arquitectura de Sistemas Distribuidos: Del CAP al PACELC
+  </text>
+  <text x="400" y="65" font-family="Arial, sans-serif" font-size="14" text-anchor="middle" fill="#64748b">
+    El árbol de decisión detrás de la consistencia y disponibilidad
+  </text>
+
+  <!-- Logic Flow -->
+  <!-- Main Input -->
+  <rect x="325" y="100" width="150" height="60" rx="10" fill="#e2e8f0" stroke="#94a3b8" stroke-width="2"/>
+  <text x="400" y="135" font-family="Arial, sans-serif" font-size="14" font-weight="bold" text-anchor="middle" fill="#1e293b">Estado de Red</text>
+
+  <!-- Branching Paths -->
+  <path d="M 400 160 L 400 200" stroke="#94a3b8" stroke-width="2" fill="none" />
+  <path d="M 400 160 L 250 160" stroke="#94a3b8" stroke-width="2" fill="none" />
+  <path d="M 400 160 L 550 160" stroke="#94a3b8" stroke-width="2" fill="none" />
+
+  <!-- Labels for branches -->
+  <text x="220" y="150" font-family="Arial, sans-serif" font-size="12" font-weight="bold" fill="#ef4444">Red Fallida (P)</text>
+  <text x="560" y="150" font-family="Arial, sans-serif" font-size="12" font-weight="bold" fill="#3b82f6">Red Operativa</text>
+
+  <!-- Decision Nodes - LEFT (CAP) -->
+  <rect x="140" y="210" width="220" height="120" rx="10" fill="#fee2e2" stroke="#ef4444" stroke-width="2"/>
+  <text x="250" y="245" font-family="Arial, sans-serif" font-size="14" font-weight="bold" text-anchor="middle" fill="#991b1b">Dilema CAP</text>
+  <text x="250" y="275" font-family="Arial, sans-serif" font-size="12" text-anchor="middle">Si hay partición (P), ¿priorizas:</text>
+  <text x="250" y="305" font-family="Arial, sans-serif" font-size="14" font-weight="bold" text-anchor="middle" fill="#ef4444">A vs C</text>
+
+  <!-- Decision Nodes - RIGHT (PACELC) -->
+  <rect x="430" y="210" width="240" height="120" rx="10" fill="#dbeafe" stroke="#3b82f6" stroke-width="2"/>
+  <text x="550" y="245" font-family="Arial, sans-serif" font-size="14" font-weight="bold" text-anchor="middle" fill="#1e40af">Evolución PACELC</text>
+  <text x="550" y="275" font-family="Arial, sans-serif" font-size="12" text-anchor="middle">En estado normal, ¿priorizas:</text>
+  <text x="550" y="305" font-family="Arial, sans-serif" font-size="14" font-weight="bold" text-anchor="middle" fill="#3b82f6">L vs C</text>
+
+  <!-- Specific choices for CAP -->
+  <path d="M 250 330 L 180 380" stroke="#ef4444" stroke-width="2" stroke-dasharray="5,5" fill="none"/>
+  <path d="M 250 330 L 320 380" stroke="#ef4444" stroke-width="2" stroke-dasharray="5,5" fill="none"/>
+  <text x="170" y="410" font-family="Arial, sans-serif" font-size="12" text-anchor="middle">Alta Disponibilidad</text>
+  <text x="320" y="410" font-family="Arial, sans-serif" font-size="12" text-anchor="middle">Consistencia Estricta</text>
+
+  <!-- Specific choices for PACELC -->
+  <path d="M 550 330 L 480 380" stroke="#3b82f6" stroke-width="2" stroke-dasharray="5,5" fill="none"/>
+  <path d="M 550 330 L 620 380" stroke="#3b82f6" stroke-width="2" stroke-dasharray="5,5" fill="none"/>
+  <text x="480" y="410" font-family="Arial, sans-serif" font-size="12" text-anchor="middle">Baja Latencia (Velocidad)</text>
+  <text x="620" y="410" font-family="Arial, sans-serif" font-size="12" text-anchor="middle">Consistencia (Precisión)</text>
+
+  <!-- Footer Notes -->
+  <rect x="50" y="440" width="700" height="40" rx="5" fill="#f1f5f9"/>
+  <text x="400" y="465" font-family="Arial, sans-serif" font-size="12" text-anchor="middle" fill="#475569">
+    * El diseño arquitectónico es un árbol de decisiones sobre los compromisos técnicos inevitables.
+  </text>
+</svg>

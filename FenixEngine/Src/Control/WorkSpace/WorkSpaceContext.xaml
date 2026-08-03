@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentView xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="FenixEngine.Src.Control.WorkSpaceContext">
+
+<Border Padding="15" 
+            StrokeShape="RoundRectangle 10"
+            BackgroundColor="{AppThemeBinding Light=#FFFFFF, Dark=#1E1E1E}">
+        
+        <VerticalStackLayout Spacing="12">
+            
+            <Label Text="Contexto Markdown (.md)" 
+                   FontAttributes="Bold" 
+                   FontSize="16" />
+
+            <!-- BOTÓN DE BÚSQUEDA DE ARCHIVOS -->
+            <Button Text="📁 Seleccionar Archivos .md" 
+                    Command="{Binding PickFilesCommand}" 
+                    BackgroundColor="{AppThemeBinding Light=#007AFF, Dark=#0A84FF}"
+                    TextColor="White"
+                    FontAttributes="Bold"
+                    HorizontalOptions="Fill" />
+
+            <BoxView HeightRequest="1" Color="Gray" Opacity="0.2" Margin="0,5" />
+
+            <!-- LISTA DE ARCHIVOS CARGADOS -->
+            <Label Text="Archivos seleccionados:" 
+                   FontSize="12" 
+                   TextColor="Gray" 
+                   FontAttributes="Bold" />
+
+            <CollectionView ItemsSource="{Binding SelectedMarkdownFiles}"
+                            HeightRequest="250">
+                <CollectionView.EmptyView>
+                    <Label Text="No se han cargado archivos." 
+                           FontSize="12" 
+                           TextColor="Gray" 
+                           HorizontalOptions="Center" 
+                           Margin="0,20"/>
+                </CollectionView.EmptyView>
+                <CollectionView.ItemTemplate>
+                    <DataTemplate>
+                        <Border Padding="8" 
+                                Margin="0,3" 
+                                StrokeShape="RoundRectangle 6"
+                                BackgroundColor="{AppThemeBinding Light=#F0F0F0, Dark=#2D2D2D}"
+                                StrokeThickness="0">
+                            <Label Text="{Binding .}" 
+                                   FontSize="12" 
+                                   LineBreakMode="MiddleTruncation" />
+                        </Border>
+                    </DataTemplate>
+                </CollectionView.ItemTemplate>
+            </CollectionView>
+            
+        </VerticalStackLayout>
+    </Border>
+
+</ContentView>

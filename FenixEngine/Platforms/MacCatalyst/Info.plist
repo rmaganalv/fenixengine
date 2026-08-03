@@ -38,6 +38,16 @@
 	<string>Assets.xcassets/appicon.appiconset</string>
 
 
+<key>NSSpeechRecognitionUsageDescription</key>
+<string>Necesito acceso al reconocimiento de voz para transcribir tu audio.</string>
+<key>NSMicrophoneUsageDescription</key>
+<string>Necesito acceso al micrófono para capturar tu voz.</string>
+<key>NSAppTransportSecurity</key>
+<dict>
+    <key>NSAllowsLocalNetworking</key>
+    <true/>
+</dict>
+
 	
 </dict>
 </plist>

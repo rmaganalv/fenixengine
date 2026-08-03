@@ -28,5 +28,11 @@
 	</array>
 	<key>XSAppIconAssets</key>
 	<string>Assets.xcassets/appicon.appiconset</string>
+	<key>NSMicrophoneUsageDescription</key>
+	<string>Se requiere el micrófono para la función de dictado por voz.</string>
+	<key>NSSpeechRecognitionUsageDescription</key>
+	<string>Se requiere reconocimiento de voz para convertir lo que hablas a texto.</string>
+
+
 </dict>
 </plist>

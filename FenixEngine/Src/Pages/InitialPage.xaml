@@ -1,30 +1,44 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:views="clr-namespace:FenixEngine.Src.Control"
              x:Class="FenixEngine.Src.Pages.InitialPage">
 
-    <VerticalStackLayout
-        Spacing="25"
-        Padding="30"
-        VerticalOptions="Center">
+    <!-- GRID RAÍZ: Separa la barra lateral fija del área con Scroll -->
+    <Grid ColumnDefinitions="Auto, *" 
+          ColumnSpacing="10">
 
-        <!-- Título Principal -->
-        <Label
-            Text="¡Hola, Mundo!"
-            FontSize="32"
-            HorizontalOptions="Center" />
+        <!-- 1. ACTIVITY BAR (Estilo VS Code, fijo a la izquierda) -->
+        <views:ActivityBarView Grid.Column="0" 
+                           VerticalOptions="Fill" />
 
-        <!-- Descripción -->
-        <Label
-            Text="Bienvenido a tu primera aplicación .NET MAUI"
-            FontSize="18"
-            HorizontalOptions="Center" />
+        <!-- 2. ÁREA DE TRABAJO PRINCIPAL (Con Scroll) -->
+        <ScrollView Grid.Column="1">
+            <VerticalStackLayout Padding="5" Spacing="15">
+                
+                <!-- Barra de Tareas / Configuración del Servidor -->
+                <views:TaskPanel />
 
-        <!-- Botón Interactivo -->
-        <Button
-            x:Name="CounterBtn"
-            Text="Haz clic aquí"
-            HorizontalOptions="Center" />
-    </VerticalStackLayout>
+                <!-- WORKSPACE DIVIDIDO EN DOS COLUMNAS -->
+                <Grid ColumnDefinitions="*, 2*" 
+                      ColumnSpacing="15"
+                      HorizontalOptions="FillAndExpand">
+
+                    <!-- Panel Izquierdo: Gestor de Contexto (.md) -->
+                    <views:WorkSpaceContext Grid.Column="0" 
+                                            VerticalOptions="Start" />
+
+                    <!-- Panel Derecho: Consola de Chat -->
+                    <views:WorkSpaceChat Grid.Column="1" 
+                                         VerticalOptions="Start" />
+                </Grid>
+
+                <!-- COMPONENTE DE RESPUESTA DE IA (Abajo, ancho completo) -->
+                <views:WorkSpaceResponse />
+
+            </VerticalStackLayout>
+        </ScrollView>
+
+    </Grid>
 
 </ContentPage>

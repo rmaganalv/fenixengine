@@ -1,6 +1,11 @@
 ﻿
-using FenixEngine.Desktop;
+using FenixEngine.Src.Pages;
+using FenixEngine.Src.ViewModels;
+using FenixEngine.AppCore;
+using FenixEngine.Services;
+
 using Microsoft.Extensions.Logging;
+
 
 namespace FenixEngine;
 
@@ -11,20 +16,29 @@ public static class MauiProgram
 		var builder = MauiApp.CreateBuilder();
 		builder
 			.UseMauiApp<App>()
-			//.AddDesktop()
+			.UseEngineAppCore()
+			.UseEngineServices()///TODO: Eliminate this Service
+			
 			.ConfigureFonts(fonts =>
 			{
 				fonts.AddFont("OpenSans-Regular.ttf", "OpenSansRegular");
 				fonts.AddFont("OpenSans-Semibold.ttf", "OpenSansSemibold");
 			});
 
+        // ViewModel y Vista
+        builder.Services.AddTransient<InitialViewModel>();
+        builder.Services.AddTransient<InitialPage>();
 
 
-#if DEBUG
+	#if DEBUG
 		builder.Logging.AddDebug();
-#endif
+	#endif
+		var app = builder.Build();
+		app.InitializeEngineDatabase();
 
-		return builder.Build();
+
+		return app;
+
 	}
 
 }

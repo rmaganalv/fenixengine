@@ -48,10 +48,10 @@
 
 	<ItemGroup>
 		<!-- App Icon -->
-		<MauiIcon Include="Resources\AppIcon\appicon.svg" ForegroundFile="Resources\AppIcon\appiconfg.svg" Color="#512BD4" />
+		<MauiIcon Include="Resources\AppIcon\appicon.svg" text="#ffff" ForegroundFile="Resources\AppIcon\appiconfg.svg" Color="#fb1b1b" />
 
 		<!-- Splash Screen -->
-		<MauiSplashScreen Include="Resources\Splash\splash.svg" Color="#512BD4" BaseSize="128,128" />
+		<MauiSplashScreen Include="Resources\Splash\splash.svg" Color="#fb1b1b" BaseSize="128,128" />
 
 		<!-- Images -->
 		<MauiImage Include="Resources\Images\*" />
@@ -66,15 +66,19 @@
 		<MauiAsset Include="Resources\Raw\Pages\**" LogicalName="%(RecursiveDir)%(Filename)%(Extension)" />
 	</ItemGroup>
 
+
 	<ItemGroup>
+		<PackageReference Include="Microsoft.Extensions.Http" Version="10.0.10" />
 		<PackageReference Include="Microsoft.Maui.Controls" Version="$(MauiVersion)" />
 		<PackageReference Include="Microsoft.Extensions.Logging.Debug" Version="10.0.0" />
+		<PackageReference Include="CommunityToolkit.Mvvm" Version="8.4.2" />
 	</ItemGroup>
 
 	<ItemGroup>
-	  <ProjectReference Include="../AppCore.Generator/AppCore.Generator.csproj" />
-	  <ProjectReference Include="../FenixEngine.Desktop/FenixEngine.Desktop.csproj" />
-	  <ProjectReference Include="../Service.Resources/Service.Resources.csproj" />
+	  <ProjectReference Include="../FenixEngine.Agents/FenixEngine.Agents.csproj" />
+	  <ProjectReference Include="../FenixEngine.AppCore/FenixEngine.AppCore.csproj" />
+	  <ProjectReference Include="../FenixEngine.Services/FenixEngine.Services.csproj" />
+	  <ProjectReference Include="../FenixEngine.Shared/FenixEngine.Shared.csproj" />
 	</ItemGroup>
 
 </Project>
