@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="FenixEngine.Src.Pages.Chat.ChatPage">
+
+    <Grid ColumnDefinitions="200,*">
+        <!-- Barra lateral de contactos -->
+        <CollectionView Grid.Column="0"
+                        ItemsSource="{Binding Contacts}"
+                        SelectionMode="Single"
+                        SelectedItem="{Binding SelectedContact, Mode=TwoWay}">
+            <CollectionView.ItemTemplate>
+                <DataTemplate>
+                    <Frame Padding="10"
+                           Margin="5"
+                           CornerRadius="8"
+                           BackgroundColor="{StaticResource Secondary}">
+                        <Label Text="{Binding Name}" TextColor="White"/>
+                    </Frame>
+                </DataTemplate>
+            </CollectionView.ItemTemplate>
+        </CollectionView>
+
+        <!-- Área de chat -->
+        <Grid Grid.Column="1" RowDefinitions="*,Auto">
+            <CollectionView ItemsSource="{Binding Messages}"
+                            Margin="10"
+                            VerticalOptions="FillAndExpand">
+                <CollectionView.ItemTemplate>
+                    <DataTemplate>
+                        <Frame Padding="10"
+                               Margin="5"
+                               CornerRadius="8"
+                               BackgroundColor="{Binding IsUser, Converter={StaticResource BoolToColorConverter}}">
+                            <Label Text="{Binding Text}" TextColor="White"/>
+                        </Frame>
+                    </DataTemplate>
+                </CollectionView.ItemTemplate>
+            </CollectionView>
+
+            <Grid Grid.Row="1" ColumnDefinitions="*,Auto" Padding="10">
+                <Entry Text="{Binding CurrentMessage, Mode=TwoWay}"
+                       Placeholder="Escribe tu mensaje..."
+                       VerticalOptions="Center"/>
+                <Button Text="Enviar"
+                        Command="{Binding SendMessageCommand}"
+                        Grid.Column="1"
+                        VerticalOptions="Center"/>
+            </Grid>
+        </Grid>
+    </Grid>
+
+</ContentPage>

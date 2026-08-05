@@ -25,6 +25,11 @@
 
 	<ItemGroup>
 		<PackageReference Include="Microsoft.Maui.Controls" Version="$(MauiVersion)" />
+		<!-- Para inferencia general de ONNX (Visión, Clasificación, etc.) -->
+		<PackageReference Include="Microsoft.ML.OnnxRuntime" Version="1.24.4" />
+		
+		<!-- O si estás usando un LLM / Generación de texto (GenAI) -->
+		<PackageReference Include="Microsoft.ML.OnnxRuntimeGenAI" Version="0.4.0" />
 	</ItemGroup>
 
 </Project>

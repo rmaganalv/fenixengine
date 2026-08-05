@@ -1,14 +1,20 @@
-﻿<?xml version = "1.0" encoding = "UTF-8" ?>
+﻿<?xml version="1.0" encoding="utf-8" ?>
 <Application xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-             xmlns:local="clr-namespace:FenixEngine"
+             xmlns:converters="clr-namespace:FenixEngine.Src.Converters"
              x:Class="FenixEngine.App">
+
     <Application.Resources>
         <ResourceDictionary>
-            <ResourceDictionary.MergedDictionaries>
-                <ResourceDictionary Source="Resources/Styles/Colors.xaml" />
-                <ResourceDictionary Source="Resources/Styles/Styles.xaml" />
-            </ResourceDictionary.MergedDictionaries>
+            <!-- Paleta de colores -->
+            <Color x:Key="Primary">#512BD4</Color>
+            <Color x:Key="Secondary">#2B0B98</Color>
+            <Color x:Key="Tertiary">#A020F0</Color>
+
+            <!-- Converter para mensajes -->
+            <converters:BoolToColorConverter x:Key="BoolToColorConverter"
+                                             UserColor="{StaticResource Primary}"
+                                             BotColor="{StaticResource Secondary}" />
         </ResourceDictionary>
     </Application.Resources>
 </Application>

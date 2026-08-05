@@ -16,8 +16,8 @@ namespace FenixEngine.AppCore.Utils.Enums;
 
 public enum StatesNode
 {
-    START_NODE,
-    PROCESS_NODE,
-    ERROR_NODE,
-    FINISH_NODE
+    Start,
+    Process,
+    Error,
+    Finish
 }

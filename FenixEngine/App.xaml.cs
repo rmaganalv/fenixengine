@@ -1,10 +1,11 @@
 ﻿using FenixEngine.Src.Pages;
+using FenixEngine.Src.Pages.Chat;
 
 namespace FenixEngine;
 
 public partial class App : Application
 {
-	public App(InitialPage initialPage)
+	public App(ChatPage initialPage)
 	{
 		try
 		{

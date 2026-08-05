@@ -75,10 +75,10 @@
 	</ItemGroup>
 
 	<ItemGroup>
-	  <ProjectReference Include="../FenixEngine.Agents/FenixEngine.Agents.csproj" />
 	  <ProjectReference Include="../FenixEngine.AppCore/FenixEngine.AppCore.csproj" />
+	  <ProjectReference Include="../FenixEngine.DataBase/FenixEngine.DataBase.csproj" />
 	  <ProjectReference Include="../FenixEngine.Services/FenixEngine.Services.csproj" />
-	  <ProjectReference Include="../FenixEngine.Shared/FenixEngine.Shared.csproj" />
+	  <ProjectReference Include="../FenixEngine.Shared/FenixEngine.DataBase.csproj" />
 	</ItemGroup>
 
 </Project>

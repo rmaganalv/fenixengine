@@ -3,8 +3,8 @@
 using System.Collections.ObjectModel;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
+using FenixEngine.DataBase.Src.Services;
 using FenixEngine.Services.IaAssistant;
-using FenixEngine.Services.Src.DataAccess;
 using FenixEngine.Services.Src.Models;
 using Microsoft.EntityFrameworkCore;
 
@@ -12,7 +12,7 @@ namespace FenixEngine.Src.ViewModels;
 
 public partial class InitialViewModel : BaseViewModel
 {
-    private readonly EngineDbContext _context;
+    private readonly ServiceDbContext _context;
     
     private readonly IAIAgentService _aiAgentService;
 
@@ -38,7 +38,7 @@ public partial class InitialViewModel : BaseViewModel
     // Colección de rutas de archivos Markdown seleccionados (.md)
     public ObservableCollection<string> SelectedMarkdownFiles { get; } = new();
 
-    public InitialViewModel(IAIAgentService aiAgentService, EngineDbContext context)
+    public InitialViewModel(IAIAgentService aiAgentService, ServiceDbContext context)
     {
         _aiAgentService = aiAgentService;
         _options = new AgentOptions();
