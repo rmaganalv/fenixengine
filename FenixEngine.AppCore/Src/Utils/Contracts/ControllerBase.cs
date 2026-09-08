@@ -52,36 +52,28 @@ public abstract class ControllerBase<TResult>
     // Método protegido para que las clases hijas reporten avances intermedios si lo necesitan
     protected void LogStep(TResult stateGenerator, string message)
     {
-        Console.ForegroundColor = ConsoleColor.Yellow;
         Console.WriteLine($"[PROCESO] -> {stateGenerator}: {message}");
-        Console.ResetColor();
     }
 
     private void LogStart(TResult stateGenerator)
     {
-        Console.ForegroundColor = ConsoleColor.Cyan;
         Console.WriteLine($"\n==================================================");
         Console.WriteLine($"[INICIO] Ejecutando proceso: {stateGenerator}");
         Console.WriteLine($"==================================================");
-        Console.ResetColor();
     }
 
 
     private void LogError(string errorMessage)
     {
-        Console.ForegroundColor = ConsoleColor.Red;
         Console.WriteLine($"\n[ERROR CRÍTICO] Fallo durante la ejecución: {errorMessage}");
-        Console.ResetColor();
     }
 
 
     private void LogFinish()
     {
-        Console.ForegroundColor = ConsoleColor.Green;
         Console.WriteLine($"\n==================================================");
         Console.WriteLine($"[FIN] Proceso finalizado correctamente.");
         Console.WriteLine($"==================================================\n");
-        Console.ResetColor();
     }
 
 }

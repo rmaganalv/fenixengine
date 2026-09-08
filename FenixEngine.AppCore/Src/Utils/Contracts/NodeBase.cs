@@ -52,32 +52,24 @@ public abstract class NodeBase<TResult>
     // Método protegido para que las clases hijas reporten avances intermedios si lo necesitan
     protected void LogStep(string message)
     {
-        Console.ForegroundColor = ConsoleColor.Yellow;
         Console.WriteLine($"[PROCESS] -> {message}");
-        Console.ResetColor();
     }
 
     private void LogStart(string featureName)
     {
-        Console.ForegroundColor = ConsoleColor.Cyan;
         Console.WriteLine($"[START] Begin node process: {featureName}");
-        Console.ResetColor();
     }
 
 
     private void LogError(string errorMessage)
     {
-        Console.ForegroundColor = ConsoleColor.Red;
         Console.WriteLine($"\n[CRITICAL ERROR] Process fail: {errorMessage}");
-        Console.ResetColor();
     }
 
 
     private void LogFinish()
     {
-        Console.ForegroundColor = ConsoleColor.Green;
         Console.WriteLine($"[FINISH] NOde process is end.");
-        Console.ResetColor();
     }
 
 }
