@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<Shell xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+      xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+      xmlns:local="clr-namespace:FenixEngine"
+      x:Class="FenixEngine.AppShell">
+
+    <TabBar>
+        <Tab Title="Dashboard" Icon="dotnet_bot.png">
+            <ShellContent Route="main" ContentTemplate="{DataTemplate local:MainPage}" />
+        </Tab>
+        <Tab Title="WorkStation" Icon="dotnet_bot.png">
+            <ShellContent Route="workstation" ContentTemplate="{DataTemplate local:WorkStationPage}" />
+        </Tab>
+        <Tab Title="Tareas" Icon="dotnet_bot.png">
+            <ShellContent Route="tasks" ContentTemplate="{DataTemplate local:TaskPage}" />
+        </Tab>
+        <Tab Title="Configuración" Icon="dotnet_bot.png">
+            <ShellContent Route="settings" ContentTemplate="{DataTemplate local:SettingsPage}" />
+        </Tab>
+    </TabBar>
+</Shell>

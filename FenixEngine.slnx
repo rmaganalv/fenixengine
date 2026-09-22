@@ -1,7 +1,5 @@
 <Solution>
-  <Project Path="FenixEngine.Agents/FenixEngine.Agents.csproj" />
   <Project Path="FenixEngine.AppCore/FenixEngine.AppCore.csproj" />
-  <Project Path="FenixEngine.DataBase/FenixEngine.DataBase.csproj" />
   <Project Path="FenixEngine.Services/FenixEngine.Services.csproj" />
   <Project Path="FenixEngine.Shared/FenixEngine.Shared.csproj" />
   <Project Path="FenixEngine/FenixEngine.csproj" />

@@ -1,5 +1,8 @@
 ﻿namespace FenixEngine;
 
+// SPDX-License-Identifier: GPL-3.0-or-later
+// Copyright (C) 2026 Ruben Magaña Alvarado
+
 public partial class App : Application
 {
 	public App()
@@ -9,6 +12,7 @@ public partial class App : Application
 
 	protected override Window CreateWindow(IActivationState? activationState)
 	{
-		return new Window(new MainPage()) { Title = "FenixEngine" };
+		var navPage = new NavigationPage(new LoginPage());
+		return new Window(navPage) { Title = "FenixEngine" };
 	}
 }

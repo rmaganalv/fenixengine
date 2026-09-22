@@ -13,7 +13,10 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 using FenixEngine.Shared.Modules;
+using FenixEngine.Shared.Src.Repositories;
+using FenixEngine.Shared.Src.Services.DataBase;
 using FenixEngine.Shared.Src.Services;
+using Microsoft.EntityFrameworkCore;
 
 namespace FenixEngine.Shared;
 
@@ -26,6 +29,16 @@ public static class SharedExtension
         builder.Services.AddSingleton<IFolderService,ServiceFolder>();
         builder.Services.AddSingleton<ITerminalService,ServiceTerminal>();
         builder.Services.AddSingleton<ILoggerService,ServiceFileLogger>();
+        builder.Services.AddDbContext<ServiceDbContext>(options =>
+        {
+            string databasePath = Path.Combine(FileSystem.AppDataDirectory, "fenix-engine.db3");
+            options.UseSqlite($"Data Source={databasePath}");
+        });
+        builder.Services.AddScoped<IProjectRepository, ProjectRepository>();
+        builder.Services.AddScoped<IActivityRepository, ActivityRepository>();
+        builder.Services.AddScoped<ITaskRepository, TaskRepository>();
+        builder.Services.AddScoped<IUserRepository, UserRepository>();
+        builder.Services.AddScoped<ISettingsRepository, SettingsRepository>();
 
 
         return builder;
