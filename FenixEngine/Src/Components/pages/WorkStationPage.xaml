@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!-- SPDX-License-Identifier: GPL-3.0-or-later -->
+<!-- Copyright (C) 2026 Ruben Magaña Alvarado -->
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="FenixEngine.WorkStationPage"
+             BackgroundColor="#0B1120"
+             Title="WorkStation">
+
+    <Grid Padding="20" RowDefinitions="Auto,Auto,*,Auto" RowSpacing="16">
+        <Border Stroke="#1F2937" BackgroundColor="#111827" StrokeShape="RoundRectangle 16" Padding="12">
+            <SearchBar x:Name="ActivitySearchBar" Placeholder="Buscar actividad..." Text="{Binding SearchText}" TextColor="White" PlaceholderColor="#94A3B8" BackgroundColor="#0F172A"/>
+        </Border>
+
+        <HorizontalStackLayout Grid.Row="1" Spacing="12">
+            <Button Text="Todos" BackgroundColor="#7C3AED" TextColor="White"/>
+            <Button Text="FenixCore" BackgroundColor="#334155" TextColor="White"/>
+            <Button Text="Atlas IA" BackgroundColor="#334155" TextColor="White"/>
+        </HorizontalStackLayout>
+
+        <Grid Grid.Row="2" ColumnDefinitions="0.45*,0.55*" ColumnSpacing="16">
+            <Border Stroke="#1F2937" BackgroundColor="#111827" StrokeShape="RoundRectangle 16" Padding="12">
+                <VerticalStackLayout Spacing="12">
+                    <Label Text="Proyectos activos" FontSize="18" FontAttributes="Bold" TextColor="#F8FAFC"/>
+                    <CollectionView x:Name="ProjectsListView" ItemsSource="{Binding Projects}" SelectedItem="{Binding SelectedProject}" SelectionMode="Single">
+                        <CollectionView.ItemTemplate>
+                            <DataTemplate>
+                                <Border Stroke="#334155" BackgroundColor="#0F172A" Padding="12" Margin="0,0,0,8" StrokeShape="RoundRectangle 12">
+                                    <VerticalStackLayout>
+                                        <Label Text="{Binding Name}" FontAttributes="Bold" TextColor="White"/>
+                                        <Label Text="{Binding Type}" TextColor="#67E8F9"/>
+                                    </VerticalStackLayout>
+                                </Border>
+                            </DataTemplate>
+                        </CollectionView.ItemTemplate>
+                    </CollectionView>
+                </VerticalStackLayout>
+            </Border>
+
+            <Border Grid.Column="1" Stroke="#1F2937" BackgroundColor="#111827" StrokeShape="RoundRectangle 16" Padding="12">
+                <VerticalStackLayout Spacing="12">
+                    <Label Text="Actividades" FontSize="18" FontAttributes="Bold" TextColor="#F8FAFC"/>
+                    <CollectionView x:Name="ActivitiesListView" ItemsSource="{Binding Activities}" SelectionMode="None">
+                        <CollectionView.ItemTemplate>
+                            <DataTemplate>
+                                <Border Stroke="#334155" BackgroundColor="#0F172A" Padding="12" Margin="0,0,0,8" StrokeShape="RoundRectangle 12">
+                                    <VerticalStackLayout>
+                                        <Label Text="{Binding Title}" TextColor="White" FontAttributes="Bold"/>
+                                        <Label Text="{Binding ProjectName}" TextColor="#A7F3D0"/>
+                                        <Label Text="{Binding CreatedAt, StringFormat='{0:dd/MM/yyyy HH:mm}'}" TextColor="#CBD5E1"/>
+                                    </VerticalStackLayout>
+                                </Border>
+                            </DataTemplate>
+                        </CollectionView.ItemTemplate>
+                    </CollectionView>
+                </VerticalStackLayout>
+            </Border>
+        </Grid>
+
+        <HorizontalStackLayout Grid.Row="3" Spacing="12" HorizontalOptions="End">
+            <Button Text="Gestionar proyectos" BackgroundColor="#1D4ED8" TextColor="White"/>
+            <Button Text="Gestionar actividades" BackgroundColor="#0EA5E9" TextColor="White"/>
+        </HorizontalStackLayout>
+    </Grid>
+</ContentPage>

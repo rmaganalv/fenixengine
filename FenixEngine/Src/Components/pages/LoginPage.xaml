@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!-- SPDX-License-Identifier: GPL-3.0-or-later -->
+<!-- Copyright (C) 2026 Ruben Magaña Alvarado -->
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="FenixEngine.LoginPage"
+             BackgroundColor="#0F172A"
+             Title="Iniciar sesión">
+
+    <Grid Padding="32" RowDefinitions="Auto,*,Auto" RowSpacing="24">
+        <VerticalStackLayout Spacing="8" HorizontalOptions="Center">
+            <Label Text="FenixEngine" FontSize="32" FontAttributes="Bold" TextColor="White" HorizontalTextAlignment="Center"/>
+            <Label Text="IA local y nube" FontSize="16" TextColor="#94A3B8" HorizontalTextAlignment="Center"/>
+        </VerticalStackLayout>
+
+        <Border Grid.Row="1" Stroke="#1E293B" StrokeThickness="1" BackgroundColor="#111827" Padding="24" WidthRequest="420" MaximumWidthRequest="420" HorizontalOptions="Center" VerticalOptions="Center">
+            <VerticalStackLayout Spacing="16">
+                <Label Text="Correo electrónico" TextColor="#E2E8F0" FontAttributes="Bold"/>
+                <Entry x:Name="EmailEntry" Placeholder="usuario@fenixengine.com" Keyboard="Email" Text="{Binding Email}" TextColor="White" PlaceholderColor="#94A3B8" BackgroundColor="#0F172A"/>
+
+                <Label Text="Contraseña" TextColor="#E2E8F0" FontAttributes="Bold"/>
+                <Entry x:Name="PasswordEntry" Placeholder="••••••••" IsPassword="True" Text="{Binding Password}" TextColor="White" PlaceholderColor="#94A3B8" BackgroundColor="#0F172A"/>
+
+                <Label Text="{Binding ErrorMessage}" TextColor="#FCA5A5" FontSize="12"/>
+                <Button Text="Entrar" Command="{Binding LoginCommand}" BackgroundColor="#7C3AED" TextColor="White" CornerRadius="12"/>
+            </VerticalStackLayout>
+        </Border>
+
+        <Label Grid.Row="2" Text="Conectado con agentes locales y servicios en la nube" HorizontalTextAlignment="Center" TextColor="#94A3B8" FontSize="12"/>
+    </Grid>
+</ContentPage>

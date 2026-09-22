@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <data name="Error" xml:space="preserve">
+    <value>❌ Error en la generación/validación.</value>
+  </data>
+  <data name="Completed" xml:space="preserve">
+    <value>✅ Generación/validación completada con éxito.</value>
+  </data>
+  <data name="Idle" xml:space="preserve">
+    <value>⏳ Esperando para iniciar la generación/validación...</value>
+  </data>
+  <data name="Start" xml:space="preserve">
+    <value>⚙️ Generando Actividad completa...</value>
+  </data>  
+  <data name="Finish" xml:space="preserve">
+    <value>✅ Actividad generada correctamente.</value>
+  </data>
+  
+  <data name="Generate File" xml:space="preserve">
+    <value>✅ Archivo generado: </value>
+  </data>
+  
+  <data name="Reading File" xml:space="preserve">
+    <value>📄 Leyendo especificación... </value>
+  </data>
+  <data name="Finish Reading" xml:space="preserve">
+    <value>📄 Especificación leída correctamente.</value>
+  </data>
+
+  <data name="Start Validate" xml:space="preserve">
+    <value>🔍 Validando carpeta...</value>
+  </data>
+  <data name="Error Folder" xml:space="preserve">
+    <value>⚠️ Carpeta no encontrada.</value>
+  </data>
+  <data name="Error File" xml:space="preserve">
+    <value>⚠️ No se generaron archivos .cs."</value>
+  </data>
+   <data name="Finish Validate" xml:space="preserve">
+    <value>📂 Se generaron: </value>
+  </data> 
+
+
+
+</root>

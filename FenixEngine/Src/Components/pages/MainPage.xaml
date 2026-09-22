@@ -1,0 +1,43 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<!-- SPDX-License-Identifier: GPL-3.0-or-later -->
+<!-- Copyright (C) 2026 Ruben Magaña Alvarado -->
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="FenixEngine.MainPage"
+             BackgroundColor="#0B1120"
+             Title="Dashboard">
+
+    <ScrollView>
+        <VerticalStackLayout Padding="20" Spacing="18">
+            <Grid ColumnDefinitions="*,Auto,Auto,Auto" ColumnSpacing="12">
+                <Label Text="Dashboard de proyectos" FontSize="28" FontAttributes="Bold" TextColor="White" VerticalOptions="Center"/>
+                <Button Grid.Column="1" Text="Nuevo proyecto" BackgroundColor="#1D4ED8" TextColor="White" WidthRequest="150" Clicked="OnNewProjectClicked"/>
+                <Button Grid.Column="2" Text="Base de datos" BackgroundColor="#0EA5E9" TextColor="White" WidthRequest="140" Clicked="OnDatabaseClicked"/>
+                <Button Grid.Column="3" Text="Configuración" BackgroundColor="#374151" TextColor="White" WidthRequest="130" Clicked="OnSettingsClicked"/>
+            </Grid>
+
+            <CollectionView x:Name="ProjectsCollectionView" ItemsSource="{Binding Projects}" SelectionMode="None">
+                <CollectionView.ItemsLayout>
+                    <GridItemsLayout Orientation="Vertical" Span="2" HorizontalItemSpacing="14" VerticalItemSpacing="14"/>
+                </CollectionView.ItemsLayout>
+                <CollectionView.ItemTemplate>
+                    <DataTemplate>
+                        <Border Stroke="#1F2937" StrokeThickness="1" BackgroundColor="#111827" Padding="16" StrokeShape="RoundRectangle 16">
+                            <VerticalStackLayout Spacing="8">
+                                <Label Text="{Binding Name}" FontSize="18" FontAttributes="Bold" TextColor="#F8FAFC"/>
+                                <Label Text="{Binding Type}" FontSize="12" TextColor="#67E8F9"/>
+                                <Label Text="{Binding Status}" FontSize="12" TextColor="#A7F3D0"/>
+                                <Label Text="Última modificación: {Binding LastModified, StringFormat='{0:dd/MM/yyyy HH:mm}'}" FontSize="12" TextColor="#CBD5E1"/>
+                            </VerticalStackLayout>
+                        </Border>
+                    </DataTemplate>
+                </CollectionView.ItemTemplate>
+            </CollectionView>
+
+            <Grid ColumnDefinitions="*,*" ColumnSpacing="16">
+                <Button Text="WorkStation" BackgroundColor="#7C3AED" TextColor="White" Clicked="OnWorkStationClicked"/>
+                <Button Grid.Column="1" Text="Tareas" BackgroundColor="#10B981" TextColor="White" Clicked="OnTasksClicked"/>
+            </Grid>
+        </VerticalStackLayout>
+    </ScrollView>
+</ContentPage>

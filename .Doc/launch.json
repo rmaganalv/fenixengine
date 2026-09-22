@@ -1,0 +1,14 @@
+{
+    "version": "0.2.0",
+    "type": "coreclr",
+    "configurations": [
+        {
+            "name": "FenixEngine MacCatalyst",
+            "type": "coreclr",
+            "request": "launch",
+            "preLaunchTask": "build-maccatalyst",
+            "program": "${workspaceFolder}/FenixEngine/bin/Debug/net10.0-maccatalyst/maccatalyst-arm64/FenixEngine.app/Contents/MacOS/FenixEngine",
+            "cwd": "${workspaceFolder}/FenixEngine"
+        }
+    ]
+}
