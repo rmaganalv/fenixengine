@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:vm="clr-namespace:FenixEngine.UI.ModelView"
+             xmlns:models="clr-namespace:FenixEngine.AppCore.Src.Models;assembly=FenixEngine.AppCore"
+             x:Class="FenixEngine.UI.ProjectArtifactsPage"
+             x:DataType="vm:ProjectArtifactsPageViewModel"
+             Title="Artefactos del proyecto"
+             BackgroundColor="#0B1120">
+    <Grid Padding="16" RowDefinitions="Auto,Auto,*,Auto" RowSpacing="9">
+        <VerticalStackLayout Spacing="4">
+            <Label Text="Artefactos" FontSize="22" FontAttributes="Bold" TextColor="#F8FAFC" />
+            <Label Text="{Binding ProjectName}" TextColor="#67E8F9" />
+        </VerticalStackLayout>
+        <VerticalStackLayout Grid.Row="1" Spacing="6">
+            <Grid ColumnDefinitions="*,*" ColumnSpacing="8">
+                <Picker Title="Tipo" ItemsSource="{Binding ArtifactTypes}" SelectedItem="{Binding ArtifactType}" TextColor="#F8FAFC" />
+                <Entry Grid.Column="1" Placeholder="Título" Text="{Binding Title}" TextColor="#F8FAFC" PlaceholderColor="#94A3B8" BackgroundColor="#1F2937" />
+            </Grid>
+            <Grid ColumnDefinitions="*,Auto" ColumnSpacing="8">
+                <Entry Placeholder="Descripción" Text="{Binding Description}" TextColor="#F8FAFC" PlaceholderColor="#94A3B8" BackgroundColor="#1F2937" />
+                <Button Grid.Column="1" Text="Registrar" Command="{Binding CreateCommand}" />
+            </Grid>
+            <Entry Placeholder="Ruta futura del archivo (opcional)" Text="{Binding FilePath}" TextColor="#F8FAFC" PlaceholderColor="#94A3B8" BackgroundColor="#1F2937" />
+        </VerticalStackLayout>
+        <CollectionView Grid.Row="2" ItemsSource="{Binding Artifacts}" SelectionMode="None">
+            <CollectionView.EmptyView><Label Text="Aún no hay artefactos asociados." TextColor="#94A3B8" VerticalOptions="Center" HorizontalOptions="Center" /></CollectionView.EmptyView>
+            <CollectionView.ItemTemplate>
+                <DataTemplate x:DataType="models:ProjectArtifactDto">
+                    <Border Margin="0,3" Padding="10" Stroke="#334155" BackgroundColor="#111827" StrokeShape="RoundRectangle 6">
+                        <Grid ColumnDefinitions="Auto,*" RowDefinitions="Auto,Auto" ColumnSpacing="10" RowSpacing="3">
+                            <Label Text="{Binding ArtifactType}" TextColor="#67E8F9" FontAttributes="Bold" />
+                            <Label Grid.Column="1" Text="{Binding Title}" TextColor="#F8FAFC" FontAttributes="Bold" />
+                            <Label Grid.Row="1" Grid.ColumnSpan="2" Text="{Binding Description}" TextColor="#CBD5E1" FontSize="12" />
+                        </Grid>
+                    </Border>
+                </DataTemplate>
+            </CollectionView.ItemTemplate>
+        </CollectionView>
+        <Label Grid.Row="3" Text="{Binding StatusMessage}" TextColor="#93C5FD" FontSize="12" />
+    </Grid>
+</ContentPage>

@@ -34,6 +34,9 @@ namespace FenixEngine.Shared.Src.Services.DataBase
         public DbSet<AiAgent> AiAgents { get; set; } = null!;
         public DbSet<AgentTeam> AgentTeams { get; set; } = null!;
         public DbSet<AgentTeamMember> AgentTeamMembers { get; set; } = null!;
+        public DbSet<DevelopmentProject> DevelopmentProjects { get; set; } = null!;
+        public DbSet<DevelopmentProjectTeam> DevelopmentProjectTeams { get; set; } = null!;
+        public DbSet<ProjectArtifact> ProjectArtifacts { get; set; } = null!;
 
         // Constructor para soportar Inyección de Dependencias
         public ServiceDbContext(DbContextOptions<ServiceDbContext> options) : base(options)
@@ -83,6 +86,36 @@ namespace FenixEngine.Shared.Src.Services.DataBase
                 entity.HasOne(member => member.Agent)
                     .WithMany(agent => agent.TeamMembers)
                     .HasForeignKey(member => member.AgentId)
+                    .OnDelete(DeleteBehavior.Cascade);
+            });
+
+            modelBuilder.Entity<DevelopmentProject>(entity =>
+            {
+                entity.Property(project => project.Name).UseCollation("NOCASE");
+                entity.HasIndex(project => project.Name).IsUnique();
+                entity.HasIndex(project => project.Status);
+                entity.HasIndex(project => project.IsActive);
+            });
+
+            modelBuilder.Entity<DevelopmentProjectTeam>(entity =>
+            {
+                entity.HasKey(assignment => new { assignment.ProjectId, assignment.TeamId });
+                entity.HasOne(assignment => assignment.Project)
+                    .WithMany(project => project.TeamAssignments)
+                    .HasForeignKey(assignment => assignment.ProjectId)
+                    .OnDelete(DeleteBehavior.Cascade);
+                entity.HasOne(assignment => assignment.Team)
+                    .WithMany()
+                    .HasForeignKey(assignment => assignment.TeamId)
+                    .OnDelete(DeleteBehavior.Cascade);
+            });
+
+            modelBuilder.Entity<ProjectArtifact>(entity =>
+            {
+                entity.HasIndex(artifact => new { artifact.ProjectId, artifact.CreatedAt });
+                entity.HasOne(artifact => artifact.Project)
+                    .WithMany(project => project.Artifacts)
+                    .HasForeignKey(artifact => artifact.ProjectId)
                     .OnDelete(DeleteBehavior.Cascade);
             });
 

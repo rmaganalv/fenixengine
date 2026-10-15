@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:vm="clr-namespace:FenixEngine.UI.ModelView"
+             xmlns:models="clr-namespace:FenixEngine.UI.ModelView"
+             x:Class="FenixEngine.UI.ProjectTeamsPage"
+             x:DataType="vm:ProjectTeamsPageViewModel"
+             Title="Equipos del proyecto"
+             BackgroundColor="#0B1120">
+    <Grid Padding="16" RowDefinitions="Auto,*,Auto" RowSpacing="10">
+        <VerticalStackLayout Spacing="4">
+            <Label Text="Equipos IA" FontSize="22" FontAttributes="Bold" TextColor="#F8FAFC" />
+            <Label Text="{Binding ProjectName}" TextColor="#67E8F9" />
+            <Label Text="Selecciona al menos un equipo." TextColor="#CBD5E1" FontSize="12" />
+        </VerticalStackLayout>
+        <CollectionView Grid.Row="1" ItemsSource="{Binding Teams}" SelectionMode="None">
+            <CollectionView.EmptyView><Label Text="No hay equipos IA. Regístralos desde Configuración." TextColor="#FCA5A5" VerticalOptions="Center" HorizontalOptions="Center" /></CollectionView.EmptyView>
+            <CollectionView.ItemTemplate>
+                <DataTemplate x:DataType="models:ProjectTeamSelectionViewModel">
+                    <Border Margin="0,3" Padding="10" Stroke="#334155" BackgroundColor="#111827" StrokeShape="RoundRectangle 6">
+                        <Grid ColumnDefinitions="Auto,*,Auto">
+                            <CheckBox IsChecked="{Binding IsSelected}" />
+                            <Label Grid.Column="1" Text="{Binding Name}" TextColor="#F8FAFC" FontAttributes="Bold" VerticalOptions="Center" />
+                            <Label Grid.Column="2" Text="{Binding AgentSummary}" TextColor="#94A3B8" FontSize="11" VerticalOptions="Center" />
+                        </Grid>
+                    </Border>
+                </DataTemplate>
+            </CollectionView.ItemTemplate>
+        </CollectionView>
+        <Grid Grid.Row="2" ColumnDefinitions="*,Auto" ColumnSpacing="8">
+            <Label Text="{Binding StatusMessage}" TextColor="#FCA5A5" FontSize="12" VerticalOptions="Center" />
+            <Button Grid.Column="1" Text="Guardar equipos" Command="{Binding SaveCommand}" />
+        </Grid>
+    </Grid>
+</ContentPage>

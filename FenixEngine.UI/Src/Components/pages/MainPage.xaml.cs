@@ -17,12 +17,16 @@ public partial class MainPage : ContentPage
 
     private async void OnNewProjectClicked(object sender, EventArgs e)
     {
-        await DisplayAlertAsync("Proyecto", "Se abrirá la creación de un nuevo proyecto.", "Aceptar");
+        var services = Application.Current?.Handler?.MauiContext?.Services
+            ?? throw new InvalidOperationException("Maui services are not available.");
+        await DevelopmentProjectNavigation.NavigateAsync(services, Navigation, typeof(ProjectCreatePage));
     }
 
     private async void OnDatabaseClicked(object sender, EventArgs e)
     {
-        await DisplayAlertAsync("Base de datos", "Se gestionará la persistencia de proyectos y actividades.", "Aceptar");
+        var services = Application.Current?.Handler?.MauiContext?.Services
+            ?? throw new InvalidOperationException("Maui services are not available.");
+        await DevelopmentProjectNavigation.NavigateAsync(services, Navigation, typeof(ProjectsPage));
     }
 
     private async void OnWorkStationClicked(object sender, EventArgs e)

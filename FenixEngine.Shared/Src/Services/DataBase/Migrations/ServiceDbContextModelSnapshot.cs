@@ -209,6 +209,83 @@ namespace FenixEngine.Shared.Src.Services.DataBase.Migrations
                     b.ToTable("AiProviders");
                 });
 
+            modelBuilder.Entity("FenixEngine.Shared.Src.Models.DevelopmentProject", b =>
+                {
+                    b.Property<string>("Id")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("ArchitectureStyle")
+                        .IsRequired()
+                        .HasMaxLength(160)
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("BusinessGoal")
+                        .IsRequired()
+                        .HasMaxLength(4000)
+                        .HasColumnType("TEXT");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("Description")
+                        .IsRequired()
+                        .HasMaxLength(4000)
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("FunctionalRequirements")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
+                    b.Property<bool>("IsActive")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasMaxLength(160)
+                        .HasColumnType("TEXT")
+                        .UseCollation("NOCASE");
+
+                    b.Property<string>("NonFunctionalRequirements")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
+                    b.Property<int>("Status")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<string>("TechnologyStack")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
+                    b.Property<DateTime>("UpdatedAt")
+                        .HasColumnType("TEXT");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("IsActive");
+
+                    b.HasIndex("Name")
+                        .IsUnique();
+
+                    b.HasIndex("Status");
+
+                    b.ToTable("DevelopmentProjects");
+                });
+
+            modelBuilder.Entity("FenixEngine.Shared.Src.Models.DevelopmentProjectTeam", b =>
+                {
+                    b.Property<string>("ProjectId")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("TeamId")
+                        .HasColumnType("TEXT");
+
+                    b.HasKey("ProjectId", "TeamId");
+
+                    b.HasIndex("TeamId");
+
+                    b.ToTable("DevelopmentProjectTeams");
+                });
+
             modelBuilder.Entity("FenixEngine.Shared.Src.Models.GeneralProyects", b =>
                 {
                     b.Property<string>("GProyectId")
@@ -342,6 +419,43 @@ namespace FenixEngine.Shared.Src.Services.DataBase.Migrations
                             Name = "Mistral Local",
                             UpdatedAt = new DateTime(2026, 1, 1, 8, 0, 0, 0, DateTimeKind.Utc)
                         });
+                });
+
+            modelBuilder.Entity("FenixEngine.Shared.Src.Models.ProjectArtifact", b =>
+                {
+                    b.Property<string>("Id")
+                        .HasColumnType("TEXT");
+
+                    b.Property<int>("ArtifactType")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("Description")
+                        .IsRequired()
+                        .HasMaxLength(2000)
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("FilePath")
+                        .IsRequired()
+                        .HasMaxLength(1000)
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("ProjectId")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("Title")
+                        .IsRequired()
+                        .HasMaxLength(200)
+                        .HasColumnType("TEXT");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ProjectId", "CreatedAt");
+
+                    b.ToTable("ProjectArtifacts");
                 });
 
             modelBuilder.Entity("FenixEngine.Shared.Src.Models.ProjectTask", b =>
@@ -571,6 +685,25 @@ namespace FenixEngine.Shared.Src.Services.DataBase.Migrations
                     b.Navigation("Model");
                 });
 
+            modelBuilder.Entity("FenixEngine.Shared.Src.Models.DevelopmentProjectTeam", b =>
+                {
+                    b.HasOne("FenixEngine.Shared.Src.Models.DevelopmentProject", "Project")
+                        .WithMany("TeamAssignments")
+                        .HasForeignKey("ProjectId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("FenixEngine.Shared.Src.Models.AgentTeam", "Team")
+                        .WithMany()
+                        .HasForeignKey("TeamId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Project");
+
+                    b.Navigation("Team");
+                });
+
             modelBuilder.Entity("FenixEngine.Shared.Src.Models.GeneralProyects", b =>
                 {
                     b.HasOne("FenixEngine.Shared.Src.Models.ProyectType", "ProyectType")
@@ -589,6 +722,17 @@ namespace FenixEngine.Shared.Src.Services.DataBase.Migrations
                         .IsRequired();
 
                     b.Navigation("Provider");
+                });
+
+            modelBuilder.Entity("FenixEngine.Shared.Src.Models.ProjectArtifact", b =>
+                {
+                    b.HasOne("FenixEngine.Shared.Src.Models.DevelopmentProject", "Project")
+                        .WithMany("Artifacts")
+                        .HasForeignKey("ProjectId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Project");
                 });
 
             modelBuilder.Entity("FenixEngine.Shared.Src.Models.ProjectTask", b =>
@@ -634,6 +778,13 @@ namespace FenixEngine.Shared.Src.Services.DataBase.Migrations
             modelBuilder.Entity("FenixEngine.Shared.Src.Models.AiProvider", b =>
                 {
                     b.Navigation("Models");
+                });
+
+            modelBuilder.Entity("FenixEngine.Shared.Src.Models.DevelopmentProject", b =>
+                {
+                    b.Navigation("Artifacts");
+
+                    b.Navigation("TeamAssignments");
                 });
 
             modelBuilder.Entity("FenixEngine.Shared.Src.Models.LlmModel", b =>

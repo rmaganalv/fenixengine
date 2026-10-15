@@ -20,6 +20,7 @@ public static class AppCoreExtension
         builder.Services.AddScoped<AuthenticationService>();
         builder.Services.AddScoped<SettingsDataService>();
         builder.Services.AddScoped<AiEcosystemService>();
+        builder.Services.AddScoped<DevelopmentProjectService>();
         builder.Services.AddScoped<WorkflowController>();
         builder.UseSharedServices();
         return builder;

@@ -16,11 +16,11 @@
 
 ## 2. Resumen ejecutivo
 
-FenixEngine es una aplicación .NET MAUI para organizar proyectos, actividades, tareas y configuración de agentes, con servicios de generación de prompts, documentos RUP y estructuras iniciales de proyecto. La solución está separada en UI, AppCore, Services y Shared, y utiliza SQLite/EF Core para datos locales.
+FenixEngine es una aplicación .NET MAUI para organizar proyectos de desarrollo asistido por IA, equipos/agentes, artefactos y tareas internas. FEAT-001 aporta el ecosistema multi-proveedor; FEAT-002 agrega un agregado de proyecto de desarrollo separado del portfolio legacy. La solución conserva las capas UI, AppCore, Services y Shared, con SQLite/EF Core para datos locales.
 
 El código actual tiene una base navegable y consultas conectadas a SQLite. FEAT-001 agrega un catálogo configurable de proveedores, modelos, agentes y equipos, con conectores OpenAI-compatible, Gemini y Ollama. Los servicios de prompt y RUP ahora requieren un proveedor/modelo explícitos; la UI administra el ecosistema, pero todavía no ofrece una pantalla para ejecutar workflows.
 
-El producto se encuentra en etapa de prototipo funcional. El ciclo CRUD del ecosistema IA está disponible en UI y persistido mediante SQLite; la API key se guarda por separado mediante `SecureStorage`. Siguen pendientes el CRUD de proyectos y tareas, seguridad de autenticación, la integración de ejecución de workflows desde la UI y las pruebas automatizadas. Las clases experimentales/legadas de generación de código no forman parte de FEAT-001.
+El producto se encuentra en etapa de prototipo funcional. El CRUD de Development Projects, asignación de equipos y registro de artefactos está disponible en UI y SQLite; FEAT-001 administra proveedores/modelos/agentes/equipos y guarda API keys en `SecureStorage`. Siguen pendientes seguridad de autenticación, CRUD de tareas, auditoría de cambios completa, ejecución de workflows desde UI y pruebas automatizadas. FEAT-002 no ejecuta agentes ni genera código.
 
 ## 3. RUP: Incepción
 
@@ -70,7 +70,7 @@ FenixEngine permitirá iniciar o mantener proyectos de software a partir de espe
 
 ### 3.6 Alcance de la versión actual
 
-La versión actual cubre el login local de demostración, navegación básica, lectura de proyectos/actividades/tareas, y la administración UI de proveedores/modelos/agentes/equipos IA. La creación visual de proyectos, el CRUD completo de tareas, sesión/autorización y una UI de ejecución de workflows permanecen pendientes. FEAT-001 no implementa generación de código, ejecución multiagente, RAG ni chats persistentes.
+La versión actual cubre el login local de demostración, el portfolio interno legacy, el módulo Development Projects con características, estado, equipos y artefactos, y la administración UI del ecosistema IA. El CRUD completo de tareas, sesión/autorización, auditoría de revisiones y la UI de ejecución de workflows permanecen pendientes. FEAT-001/002 no implementan generación de código, ejecución multiagente, RAG ni chats persistentes.
 
 ## 4. RUP: Elaboración
 
@@ -161,7 +161,8 @@ flowchart TD
 | RF-05 | Consultar tareas agrupadas por proyecto | Implementado en lectura; no hay edición desde la UI |
 | RF-06 | Consultar proveedores cloud y agentes locales | Implementado en lectura |
 | RF-07 | Guardar configuración de IA | Implementado para proveedores, modelos, agentes y equipos mediante el módulo AI Ecosystem; Settings legacy continúa en lectura |
-| RF-08 | Crear/editar/eliminar proyectos | Pendiente: no existe repositorio/caso de uso de escritura para proyectos |
+| RF-08 | Crear/editar/eliminar proyectos internos legacy | Pendiente en `GeneralProyects`; los proyectos IA se cubren en FEAT-002/RF-201–RF-204 |
+| RF-08 | Crear/editar/eliminar proyectos de desarrollo IA | Implementado mediante Development Projects; `GeneralProyects` sigue siendo el portfolio interno legacy |
 | RF-09 | Ejecutar prompt con configuración elegida | Parcial: el servicio requiere proveedor/modelo explícitos y delega al conector; no hay acción UI de ejecución |
 | RF-10 | Generar documento RUP | Parcial/legacy: ahora requiere proveedor/modelo explícitos; no está conectado a UI y FEAT-001 no implementa generación RUP |
 | RF-11 | Generar estructura de proyecto | Parcial: crea carpetas `src`, `docs`, `tests` y README; no genera solución/código ni está conectado a UI |
@@ -285,29 +286,30 @@ Entregables realizados:
 ## 9. Próximos incrementos
 
 1. Seguridad de autenticación: autorización/propiedad, hash seguro, sesión y logout.
-2. Administración de proyectos y tareas: CRUD visual, validación y filtros por usuario.
-3. UI de ejecución: seleccionar proveedor/modelo/agente, mostrar resultados, progreso, cancelación y errores.
-4. Migración de esquema legacy: baseline y evolución versionada de las tablas previas a FEAT-001.
-5. Trazabilidad de actividades y resultados de workflow.
+2. CRUD de tareas y filtro de proyectos según usuario.
+3. Historial/auditoría de cambios del proyecto, más allá de `UpdatedAt`.
+4. UI de ejecución de workflows: selección de agente/equipo, progreso, cancelación, resultado y errores.
+5. Migración de esquema legacy: baseline y evolución versionada de tablas anteriores a FEAT-001.
 6. Pruebas automatizadas y validación visual multiplataforma.
-7. Consolidación de rutas experimentales/legacy; mantener generación de código fuera de FEAT-001.
+7. Consolidación de rutas experimentales; mantener generación de código fuera de FEAT-002.
 
 ## 10. Inventario de módulos contrastado con el código
 
 | Proyecto / módulo | Responsabilidad y contenido observado | Estado |
 |---|---|---|
-| `FenixEngine.UI` | Aplicación MAUI, recursos, navegación, `MauiProgram`, páginas y ViewModels | Base implementada; CRUD de AI Ecosystem disponible, CRUD de proyectos/tareas pendiente |
+| `FenixEngine.UI` | Aplicación MAUI, recursos, navegación, `MauiProgram`, páginas y ViewModels | CRUD de Development Projects y AI Ecosystem; CRUD de tareas pendiente |
 | UI / autenticación | `LoginPage`, `LoginPageViewModel`; delega en `AuthenticationService` | Login local de prueba; no hay sesión ni logout |
-| UI / portfolio | `MainPage`, `MainPageViewModel`; lista `ProjectSummary` | Lectura conectada; botones de nuevo proyecto/base de datos muestran avisos, no ejecutan acciones |
+| UI / portfolio | `MainPage`, `MainPageViewModel`; lista `ProjectSummary` | Lectura del portfolio legacy; nuevo proyecto y Proyectos IA navegan al módulo Development Projects |
 | UI / WorkStation | Proyectos, selección y filtro de actividades en `WorkStationPageViewModel` | Lectura y filtro local implementados |
 | UI / tareas | `TaskPage` y `TaskPageViewModel`; agrupación por nombre de proyecto | Solo lectura |
 | UI / Settings | `SettingsPage` y `SettingsPageViewModel` | Settings legacy de lectura y navegación al módulo AI Ecosystem |
 | UI / AI Ecosystem | ProvidersPage, ModelsPage, AgentsPage, TeamsPage y ViewModels MVVM | CRUD, conexión, sincronización y membresías mediante BindingContext/DI |
-| `FenixEngine.AppCore` / controladores | Portfolio, DTOs, `WorkflowController` y DTOs AI Ecosystem | Casos de uso IA coordinados; workflow no tiene caller UI y exige configuración explícita |
-| AppCore / servicios | Authentication/data services y `AiEcosystemService` | CRUD, validación/sincronización, asociación de modelos y gestión de equipos; sin acceso de UI a repositorios |
+| UI / Development Projects | `ProjectsPage`, `ProjectCreatePage`, `ProjectDetailsPage`, `ProjectTeamsPage`, `ProjectArtifactsPage` | Lista/búsqueda/estado, CRUD, contexto, equipos y metadata de artefactos mediante MVVM |
+| `FenixEngine.AppCore` / controladores | Portfolio, DTOs, `WorkflowController` y servicios de aplicación FEAT-001/002 | Casos de uso async de proyectos, equipos, artefactos y contexto; los workflows no tienen caller UI |
+| AppCore / servicios | Authentication/data services, `AiEcosystemService`, `DevelopmentProjectService` | CRUD/filtros/validación de proyectos, equipos y artefactos; UI no accede directamente a repositorios |
 | AppCore / ejecución experimental | `WorkflowEngine`, `Handlers`, `Sanitizant`, `ServiceHost`, contextos y nodos | Código de prototipo/legado; no confundir con los workflows registrados en DI |
-| `FenixEngine.Shared` / dominio y datos | Modelos legacy más `AiProvider`, `LlmModel`, `AiAgent`, `AgentTeam`, `AgentTeamMember` | Relaciones EF explícitas; API key no forma parte del modelo SQLite |
-| Shared / repositorios | Repositorios legacy y cuatro repositorios AI separados | CRUD completo del ecosistema; restricciones protegen entidades en uso |
+| `FenixEngine.Shared` / dominio y datos | Modelos legacy, entidades de AI Ecosystem y `DevelopmentProject`, asignaciones y artefactos | Agregado de desarrollo independiente de `GeneralProyects`; enums de estado/tipo |
+| Shared / repositorios | Repositorios legacy, repositorios IA y repos de proyectos/artefactos | CRUD async, filtros de proyecto, nombre único case-insensitive y relación N:M |
 | Shared / servicios comunes | Archivos, carpetas, terminal y logging | Contratos/implementaciones disponibles para workflows |
 | `FenixEngine.Services` / conectores | `IAProviderConnector`, factory, OpenAI-compatible, Gemini y Ollama | Validar, descubrir modelos y ejecutar prompt; extensibles mediante DI |
 | Services / secretos/transporte | `IApiKeyStore`/`SecureApiKeyStore`, `IHttpClientService.SendAsync` | API keys en SecureStorage y headers; no aparecen en DTOs, listas ni logs |
@@ -332,6 +334,9 @@ Las entidades y tablas centrales definidas en `FenixEngine.Shared/Src/Models/Mod
 | `LlmModel` | Modelo registrado por proveedor | Identificador único por proveedor; ventana de contexto opcional |
 | `AiAgent` | Nombre, rol, descripción, prompt de sistema y modelo | Se asocia a un único modelo |
 | `AgentTeam`, `AgentTeamMember` | Equipo y relación muchos-a-muchos con agentes | Clave compuesta; cascada en membresías |
+| `DevelopmentProject` | Unidad de trabajo de desarrollo asistido por IA | Requerimientos, arquitectura, stack, estado y activo; `UpdatedAt` registra la última modificación, no un historial de revisiones |
+| `DevelopmentProjectTeam` | Relación muchos-a-muchos proyecto/equipo IA | Clave compuesta; AppCore exige al menos un equipo al crear/editar/asignar |
+| `ProjectArtifact` | Metadata de artefactos asociados al proyecto | Tipo, título, descripción, ruta opcional y fecha; no genera archivos |
 | `UserEmails`, `ComandTerminal`, `AgentRole`, `CollectAgents`, `LLMModels` | Modelos adicionales definidos en el archivo de dominio | No están expuestos como `DbSet` en el contexto actual |
 
 ### 10.2 Integración de dependencias y arranque
@@ -341,6 +346,7 @@ Las entidades y tablas centrales definidas en `FenixEngine.Shared/Src/Models/Mod
 - `FenixEngine.Shared/SharedExtension.cs` registra el DbContext SQLite y repositorios.
 - En `DEBUG` y `RELEASE`, el arranque llama `DatabaseInitializer.Initialize`; `EnsureCreated` y SQL de compatibilidad conservan el esquema legacy, y `Migrate()` aplica `AiEcosystemSchema`.
 - `AiEcosystemSchema` crea solo las cinco tablas del ecosistema con `CREATE TABLE/INDEX IF NOT EXISTS`; no recrea tablas ni reingresa semillas legacy. `Down` elimina únicamente tablas nuevas.
+- `DevelopmentProjectsSchema` crea de forma idempotente las tablas `DevelopmentProjects`, `DevelopmentProjectTeams` y `ProjectArtifacts`; no modifica datos legacy.
 - El target condicional `FenixEfDesign=true` y `FenixEngine.Migrations.DesignHost` permiten scaffold de EF desde `net10.0` sin arrancar MAUI.
 - No se encontró un proyecto de pruebas ni una configuración de CI de tests en los archivos fuente enumerados para esta revisión.
 
@@ -350,6 +356,7 @@ Las entidades y tablas centrales definidas en `FenixEngine.Shared/Src/Models/Mod
 |---|---|---|---|
 | GAP-01 | Autenticación débil para producción, sin sesión/logout | Alta | Hash resistente con salt, gestión de sesión, logout y pruebas |
 | GAP-02 | Proyectos no filtrados por usuario ni administrables | Alta | Propiedad/autorización aplicada en consulta y CRUD persistente |
+| GAP-02 | Development Projects aún no tienen propietario/autorización por usuario | Alta | Definir propiedad y aplicar autorización a consultas/cambios; CRUD local ya existe |
 | GAP-03 | Workflows no disponibles desde la UI | Alta | Acción de UI, estado de progreso, cancelación y resultado visible |
 | GAP-04 | Respuesta del prompt descartada y validación nominal | Alta | Resultado o artefacto visible; validación real y error observable |
 | GAP-05 | No existe UI para seleccionar un agente y ejecutar workflows | Alta | Acción UI usa proveedor/modelo elegidos, muestra resultado y errores |
@@ -464,6 +471,7 @@ Copiar esta sección por cada feature. Mantener los IDs de requisitos y artefact
 |---|---|
 | 2026-10-15 | Revisión del inventario y estados contra el código actual; corrección de rutas y claims no conectados; añadidas brechas y plantilla RUP de feature. |
 | 2026-10-15 | FEAT-001: catálogo híbrido multi-proveedor, conectores, UI MVVM, migración idempotente y persistencia no destructiva en DEBUG. |
+| 2026-10-15 | FEAT-002: proyectos de desarrollo IA, asignación de equipos, artefactos, builder de contexto y UI MVVM. |
 
 ## 14. FEAT-001: Ecosistema IA Híbrido MultiProveedor
 
@@ -540,3 +548,81 @@ AppCore agrega `AiEcosystemService` y DTOs para CRUD, prueba de conexión, sincr
 - No hay pruebas automatizadas en la solución. Las llamadas a proveedores requieren endpoint/red/credenciales reales para su validación de extremo a extremo.
 
 Pendientes FEAT-001: resolver la verificación visual en MacCatalyst, probar endpoints con credenciales controladas, añadir tests para conectores/repositorios/AppCore/ViewModels y completar posteriormente la UI de ejecución de workflows.
+
+## 15. FEAT-002: Proyecto de Desarrollo Asistido por IA
+
+### 15.1 Control, alcance e impacto
+
+| Campo | Valor |
+|---|---|
+| ID | FEAT-002 |
+| Estado | Implementado en código; verificación visual en dispositivo pendiente |
+| Dependencia | FEAT-001: `AgentTeam`, agentes y modelos |
+| Unidad de trabajo | `DevelopmentProject`, separada de `GeneralProyects` |
+| Fuera de alcance | Ejecución de agentes/equipos, generación de código/RUP/arquitectura, chats, Git, RAG y workflows |
+
+La arquitectura mantiene UI → AppCore → Services → Shared. `GeneralProyects` permanece como portfolio interno. Las páginas nuevas no acceden a DbContext ni repositorios; AppCore coordina operaciones asíncronas y Services arma un snapshot de contexto sin invocar conectores ni llamar a la IA.
+
+### 15.2 Dominio y persistencia
+
+| Entidad | Implementación |
+|---|---|
+| `DevelopmentProject` | Nombre, descripción, objetivo, requisitos funcionales/no funcionales, arquitectura, stack, estado, timestamps y activo. |
+| `DevelopmentProjectTeam` | Relación N:M con `AgentTeam`, clave compuesta `(ProjectId, TeamId)`. |
+| `ProjectArtifact` | Tipo, título, descripción, ruta opcional y fecha, ligado al proyecto. |
+| `ProjectStatus` | Draft, Analysis, Architecture, ReadyForGeneration, Generating, Completed, Archived. |
+| `ArtifactType` | Requirement, UseCase, Architecture, Backlog, Document, SourceCode, Test, Deployment. |
+
+La migración `20261015200452_DevelopmentProjectsSchema` crea de forma idempotente las tres tablas y sus índices, sin modificar tablas legacy ni semillas. El índice de nombre usa `NOCASE` para evitar duplicados que solo difieren en mayúsculas/minúsculas. Borrar un proyecto elimina sus asignaciones y metadata de artefactos; borrar un equipo elimina sus asignaciones, no el proyecto.
+
+`CreatedAt` y `UpdatedAt` conservan creación y última modificación. No se agregó una tabla de auditoría/versiones; por tanto RF-211 cubre timestamp de actualización, no historial de cada cambio.
+
+### 15.3 Repositorios, casos de uso y contexto
+
+Shared agrega `IDevelopmentProjectRepository` y `IProjectArtifactRepository`, con operaciones async, filtro por texto/estado/activo, detección de duplicados, CRUD, reemplazo de equipos y consulta/alta de artefactos.
+
+AppCore agrega `DevelopmentProjectService` y DTOs. Valida nombre/descripción, al menos un equipo, equipos existentes, estado válido y unicidad de nombre; soporta crear, editar, eliminar, consultar, asignar equipos y registrar/listar artefactos. `UpdatedAt` cambia al guardar características o equipos.
+
+Services agrega `IProjectContextBuilder`/`ProjectContextBuilder`. AppCore carga el agregado desde Shared y el builder devuelve proyecto, requisitos, arquitectura, stack, equipos, agentes, modelos y proveedor. El builder es puro: no accede a la base, no llama HTTP y no ejecuta agentes.
+
+### 15.4 Interfaz y DI
+
+| Pantalla | Capacidades |
+|---|---|
+| `ProjectsPage` | Lista, búsqueda por nombre y filtro por estado. |
+| `ProjectCreatePage` | Crear/editar características, estado/activo y selección de al menos un equipo. |
+| `ProjectDetailsPage` | Información, equipos, agentes/modelos, artefactos, preparar contexto, editar y eliminar con confirmación. |
+| `ProjectTeamsPage` | Cambiar los equipos asignados. |
+| `ProjectArtifactsPage` | Registrar metadata y consultar artefactos ligados al proyecto. |
+
+`MauiProgram` registra las páginas y ViewModels; `AppCoreExtension` registra `DevelopmentProjectService`; `ServicesExtensions` registra `IProjectContextBuilder`; `SharedExtension` registra los repositorios.
+
+### 15.5 Trazabilidad de requisitos
+
+| Requisito | Estado | Evidencia |
+|---|---|---|
+| RF-201 Crear proyecto IA | Implementado | Formulario valida nombre, descripción y equipo(s) |
+| RF-202 Editar proyecto IA | Implementado | Formulario reutilizable por ruta con ID |
+| RF-203 Eliminar proyecto IA | Implementado | Acción con confirmación; limpia asignaciones/artefactos asociados |
+| RF-204 Consultar proyectos IA | Implementado | ProjectsPage consulta SQLite |
+| RF-205 Asignar equipos IA | Implementado | Formulario y ProjectTeamsPage; N:M |
+| RF-206 Registrar requerimiento inicial | Implementado | FunctionalRequirements y NonFunctionalRequirements |
+| RF-207 Registrar descripción funcional | Implementado | Description y BusinessGoal |
+| RF-208 Registrar stack | Implementado | TechnologyStack |
+| RF-209 Registrar arquitectura | Implementado | ArchitectureStyle |
+| RF-210 Registrar estado | Implementado | Enum `ProjectStatus` |
+| RF-211 Mantener historial de actualización | Parcial | `CreatedAt`/`UpdatedAt`; no se conserva historial de revisiones |
+| RF-212 Marcar activo | Implementado | `IsActive` en formulario/entidad |
+| RF-213 Buscar por nombre | Implementado | Búsqueda SQLite con `LIKE` |
+| RF-214 Filtrar por estado | Implementado | Picker de estados ligado al repositorio |
+
+### 15.6 Verificación y riesgos
+
+- Build de la aplicación `FenixEngine.UI` para `net10.0-maccatalyst`: exitoso; permanecen warnings conocidos `NU1903` de SQLite y nullability de handlers legacy en MainPage.
+- Migraciones FEAT-001/002 aplicadas a SQLite temporal; `has-pending-model-changes` informa que no hay cambios del modelo sin migración.
+- `git -c core.whitespace=cr-at-eol diff --check` pasa y conserva el formato CRLF original del csproj Shared.
+- La compilación CLI con `MauiDevFlowEnabled=true` para `maccatalyst-arm64` pasa. `dotnet_maui_debugProject` sigue devolviendo error genérico antes del despliegue; el diagnóstico no registra agente y el CLI no detecta estáticamente el startup project. No se declara verificación visual.
+- No se encontraron pruebas automatizadas en la solución.
+- La verificación visual runtime depende del lanzamiento MauiDevFlow; registrar resultado al terminar la validación del dispositivo.
+
+Riesgos pendientes: proyectos locales sin propietario/autorización; `UpdatedAt` no es auditoría; registro de artefactos no crea archivos; equipos/agentes/modelos se preparan como contexto, pero no se ejecutan.

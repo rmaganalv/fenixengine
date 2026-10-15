@@ -3,6 +3,7 @@ using FenixEngine.Services.IaAssistant;
 using FenixEngine.Services.Src.ApiClient;
 using FenixEngine.Services.Src.IaAssistant;
 using FenixEngine.Services.Src.Providers;
+using FenixEngine.Services.Src.ProjectContext;
 
 namespace FenixEngine.Services;
 
@@ -23,6 +24,7 @@ public static class ServicesExtensions
         builder.Services.AddSingleton<IAProviderConnector, GeminiProviderConnector>();
         builder.Services.AddSingleton<IAProviderConnector, OllamaProviderConnector>();
         builder.Services.AddSingleton<IAProviderConnectorFactory, ProviderConnectorFactory>();
+        builder.Services.AddSingleton<IProjectContextBuilder, ProjectContextBuilder>();
 
 
         return builder;

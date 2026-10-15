@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:vm="clr-namespace:FenixEngine.UI.ModelView"
+             xmlns:models="clr-namespace:FenixEngine.AppCore.Src.Models;assembly=FenixEngine.AppCore"
+             x:Class="FenixEngine.UI.ProjectDetailsPage"
+             x:DataType="vm:ProjectDetailsPageViewModel"
+             Title="Detalle del proyecto"
+             BackgroundColor="#0B1120">
+    <Grid Padding="16" RowDefinitions="*,Auto" RowSpacing="8">
+        <ScrollView>
+            <VerticalStackLayout Spacing="12">
+                <Grid ColumnDefinitions="*,Auto">
+                    <VerticalStackLayout Spacing="4">
+                        <Label Text="{Binding Project.Name}" FontSize="24" FontAttributes="Bold" TextColor="#F8FAFC" />
+                        <Label Text="{Binding Project.Status}" TextColor="#67E8F9" />
+                    </VerticalStackLayout>
+                    <HorizontalStackLayout Grid.Column="1" Spacing="5">
+                        <Button Text="Editar" Command="{Binding EditCommand}" />
+                        <Button Text="Eliminar" Command="{Binding DeleteCommand}" BackgroundColor="#7F1D1D" />
+                    </HorizontalStackLayout>
+                </Grid>
+                <Border Padding="12" Stroke="#334155" BackgroundColor="#111827" StrokeShape="RoundRectangle 6">
+                    <VerticalStackLayout Spacing="8">
+                        <Label Text="Información del proyecto" FontAttributes="Bold" TextColor="#F8FAFC" />
+                        <Label Text="{Binding Project.Description}" TextColor="#E2E8F0" />
+                        <Label Text="{Binding Project.BusinessGoal, StringFormat='Objetivo: {0}'}" TextColor="#CBD5E1" />
+                        <Label Text="{Binding Project.ArchitectureStyle, StringFormat='Arquitectura: {0}'}" TextColor="#CBD5E1" />
+                        <Label Text="{Binding Project.TechnologyStack, StringFormat='Stack: {0}'}" TextColor="#CBD5E1" />
+                        <Label Text="{Binding Project.FunctionalRequirements, StringFormat='Requisitos funcionales: {0}'}" TextColor="#CBD5E1" />
+                        <Label Text="{Binding Project.NonFunctionalRequirements, StringFormat='Requisitos no funcionales: {0}'}" TextColor="#CBD5E1" />
+                        <Label Text="{Binding Project.UpdatedAt, StringFormat='Actualizado: {0:dd/MM/yyyy HH:mm}'}" TextColor="#94A3B8" FontSize="12" />
+                    </VerticalStackLayout>
+                </Border>
+                <Grid ColumnDefinitions="*,Auto">
+                    <Label Text="Equipos IA" FontSize="18" FontAttributes="Bold" TextColor="#F8FAFC" VerticalOptions="Center" />
+                    <Button Grid.Column="1" Text="Administrar equipos" Command="{Binding TeamsCommand}" />
+                </Grid>
+                <VerticalStackLayout BindableLayout.ItemsSource="{Binding Project.Teams}" Spacing="6">
+                    <BindableLayout.EmptyView><Label Text="Sin equipos." TextColor="#94A3B8" /></BindableLayout.EmptyView>
+                    <BindableLayout.ItemTemplate>
+                        <DataTemplate x:DataType="models:DevelopmentProjectTeamDto">
+                            <Border Padding="10" Stroke="#334155" BackgroundColor="#111827" StrokeShape="RoundRectangle 6">
+                                <VerticalStackLayout Spacing="3">
+                                    <Label Text="{Binding Name}" TextColor="#F8FAFC" FontAttributes="Bold" />
+                                    <Label Text="{Binding AgentNames, StringFormat='Agentes: {0}'}" TextColor="#CBD5E1" FontSize="12" />
+                                    <Label Text="{Binding AgentModelNames, StringFormat='Modelos: {0}'}" TextColor="#A5B4FC" FontSize="12" />
+                                    <Label Text="{Binding Description}" TextColor="#94A3B8" FontSize="12" />
+                                </VerticalStackLayout>
+                            </Border>
+                        </DataTemplate>
+                    </BindableLayout.ItemTemplate>
+                </VerticalStackLayout>
+                <Grid ColumnDefinitions="*,Auto">
+                    <Label Text="Artefactos" FontSize="18" FontAttributes="Bold" TextColor="#F8FAFC" VerticalOptions="Center" />
+                    <Button Grid.Column="1" Text="Ver artefactos" Command="{Binding ArtifactsCommand}" />
+                </Grid>
+                <VerticalStackLayout BindableLayout.ItemsSource="{Binding Project.Artifacts}" Spacing="5">
+                    <BindableLayout.EmptyView><Label Text="Aún no hay artefactos registrados." TextColor="#94A3B8" /></BindableLayout.EmptyView>
+                    <BindableLayout.ItemTemplate>
+                        <DataTemplate x:DataType="models:ProjectArtifactDto">
+                            <Grid ColumnDefinitions="Auto,*" Padding="4">
+                                <Label Text="{Binding ArtifactType}" TextColor="#67E8F9" />
+                                <Label Grid.Column="1" Text="{Binding Title}" TextColor="#E2E8F0" Margin="8,0,0,0" />
+                            </Grid>
+                        </DataTemplate>
+                    </BindableLayout.ItemTemplate>
+                </VerticalStackLayout>
+            </VerticalStackLayout>
+        </ScrollView>
+        <Grid Grid.Row="1" ColumnDefinitions="*,Auto" ColumnSpacing="8">
+            <Label Text="{Binding ContextSummary, TargetNullValue=''}" TextColor="#86EFAC" FontSize="12" VerticalOptions="Center" />
+            <Button Grid.Column="1" Text="Preparar contexto" Command="{Binding PrepareContextCommand}" />
+        </Grid>
+    </Grid>
+</ContentPage>

@@ -43,6 +43,8 @@ public static class SharedExtension
         builder.Services.AddScoped<ILlmModelRepository, LlmModelRepository>();
         builder.Services.AddScoped<IAiAgentRepository, AiAgentRepository>();
         builder.Services.AddScoped<IAgentTeamRepository, AgentTeamRepository>();
+        builder.Services.AddScoped<IDevelopmentProjectRepository, DevelopmentProjectRepository>();
+        builder.Services.AddScoped<IProjectArtifactRepository, ProjectArtifactRepository>();
 
 
         return builder;

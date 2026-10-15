@@ -40,10 +40,20 @@ public static class MauiProgram
 		builder.Services.AddTransient<ModelsPageViewModel>();
 		builder.Services.AddTransient<AgentsPageViewModel>();
 		builder.Services.AddTransient<TeamsPageViewModel>();
+		builder.Services.AddTransient<ProjectsPageViewModel>();
+		builder.Services.AddTransient<ProjectCreatePageViewModel>();
+		builder.Services.AddTransient<ProjectDetailsPageViewModel>();
+		builder.Services.AddTransient<ProjectTeamsPageViewModel>();
+		builder.Services.AddTransient<ProjectArtifactsPageViewModel>();
 		builder.Services.AddTransient<ProvidersPage>();
 		builder.Services.AddTransient<ModelsPage>();
 		builder.Services.AddTransient<AgentsPage>();
 		builder.Services.AddTransient<TeamsPage>();
+		builder.Services.AddTransient<ProjectsPage>();
+		builder.Services.AddTransient<ProjectCreatePage>();
+		builder.Services.AddTransient<ProjectDetailsPage>();
+		builder.Services.AddTransient<ProjectTeamsPage>();
+		builder.Services.AddTransient<ProjectArtifactsPage>();
 #if DEBUG
 		builder.Logging.AddDebug();
 #endif

@@ -12,7 +12,7 @@
             <Grid ColumnDefinitions="*,Auto,Auto,Auto" ColumnSpacing="12">
                 <Label Text="Dashboard de proyectos" FontSize="28" FontAttributes="Bold" TextColor="White" VerticalOptions="Center"/>
                 <Button Grid.Column="1" Text="Nuevo proyecto" BackgroundColor="#1D4ED8" TextColor="White" WidthRequest="150" Clicked="OnNewProjectClicked"/>
-                <Button Grid.Column="2" Text="Base de datos" BackgroundColor="#0EA5E9" TextColor="White" WidthRequest="140" Clicked="OnDatabaseClicked"/>
+                <Button Grid.Column="2" Text="Proyectos IA" BackgroundColor="#0EA5E9" TextColor="White" WidthRequest="140" Clicked="OnDatabaseClicked"/>
                 <Button Grid.Column="3" Text="Configuración" BackgroundColor="#374151" TextColor="White" WidthRequest="130" Clicked="OnSettingsClicked"/>
             </Grid>
 

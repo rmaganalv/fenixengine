@@ -125,7 +125,7 @@ public sealed class AgentTeamRepository : IAgentTeamRepository
 
     public Task<List<AgentTeam>> GetAllAsync(CancellationToken cancellationToken = default) =>
         _dbContext.AgentTeams.AsNoTracking().Include(team => team.Members)
-            .ThenInclude(member => member.Agent).ThenInclude(agent => agent!.Model)
+            .ThenInclude(member => member.Agent).ThenInclude(agent => agent!.Model).ThenInclude(model => model!.Provider)
             .OrderBy(team => team.Name).ToListAsync(cancellationToken);
 
     public Task<AgentTeam?> GetByIdAsync(string id, CancellationToken cancellationToken = default) =>
