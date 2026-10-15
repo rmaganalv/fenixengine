@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:vm="clr-namespace:FenixEngine.UI.ModelView"
+             xmlns:models="clr-namespace:FenixEngine.AppCore.Src.Models;assembly=FenixEngine.AppCore"
+             x:Class="FenixEngine.UI.ProjectsPage"
+             x:DataType="vm:ProjectsPageViewModel"
+             Title="Development Projects"
+             BackgroundColor="#0B1120">
+    <Grid Padding="16" RowDefinitions="Auto,Auto,*,Auto" RowSpacing="10">
+        <Grid ColumnDefinitions="*,Auto" ColumnSpacing="10">
+            <Label Text="Proyectos de desarrollo" FontSize="23" FontAttributes="Bold" TextColor="#F8FAFC" VerticalOptions="Center" />
+            <Button Grid.Column="1" Text="Nuevo proyecto" Command="{Binding CreateCommand}" />
+        </Grid>
+        <Grid Grid.Row="1" ColumnDefinitions="2*,*" ColumnSpacing="8">
+            <SearchBar Placeholder="Buscar por nombre" Text="{Binding SearchText}" SearchCommand="{Binding SearchCommand}" TextColor="#F8FAFC" PlaceholderColor="#94A3B8" BackgroundColor="#111827" />
+            <Picker Grid.Column="1" Title="Estado" ItemsSource="{Binding StatusOptions}" ItemDisplayBinding="{Binding Label}" SelectedItem="{Binding SelectedStatus}" TextColor="#F8FAFC" />
+        </Grid>
+        <CollectionView Grid.Row="2" ItemsSource="{Binding Projects}" SelectionMode="None">
+            <CollectionView.EmptyView>
+                <VerticalStackLayout Spacing="8" VerticalOptions="Center" HorizontalOptions="Center">
+                    <Label Text="No hay proyectos que coincidan." TextColor="#CBD5E1" HorizontalTextAlignment="Center" />
+                    <Button Text="Crear proyecto" Command="{Binding CreateCommand}" />
+                </VerticalStackLayout>
+            </CollectionView.EmptyView>
+            <CollectionView.ItemTemplate>
+                <DataTemplate x:DataType="models:DevelopmentProjectListItemDto">
+                    <Border Margin="0,4" Padding="12" Stroke="#334155" StrokeThickness="1" BackgroundColor="#111827" StrokeShape="RoundRectangle 6">
+                        <Grid ColumnDefinitions="*,Auto" RowDefinitions="Auto,Auto,Auto" ColumnSpacing="10" RowSpacing="5">
+                            <Label Text="{Binding Name}" FontSize="17" FontAttributes="Bold" TextColor="#F8FAFC" />
+                            <Label Grid.Column="1" Text="{Binding Status}" TextColor="#67E8F9" VerticalOptions="Center" />
+                            <Label Grid.Row="1" Grid.ColumnSpan="2" Text="{Binding Description}" LineBreakMode="TailTruncation" MaxLines="2" TextColor="#CBD5E1" FontSize="13" />
+                            <Grid Grid.Row="2" Grid.ColumnSpan="2" ColumnDefinitions="*,Auto,Auto,Auto,Auto" ColumnSpacing="5">
+                                <Label Text="{Binding UpdatedAt, StringFormat='Actualizado {0:dd/MM/yyyy HH:mm}'}" TextColor="#94A3B8" FontSize="11" VerticalOptions="Center" />
+                                <Button Grid.Column="1" Text="Detalle" Padding="9,5" Command="{Binding Source={RelativeSource AncestorType={x:Type vm:ProjectsPageViewModel}}, Path=OpenDetailsCommand}" CommandParameter="{Binding .}" />
+                                <Button Grid.Column="2" Text="Editar" Padding="9,5" Command="{Binding Source={RelativeSource AncestorType={x:Type vm:ProjectsPageViewModel}}, Path=EditCommand}" CommandParameter="{Binding .}" />
+                                <Button Grid.Column="3" Text="Equipos" Padding="9,5" Command="{Binding Source={RelativeSource AncestorType={x:Type vm:ProjectsPageViewModel}}, Path=TeamsCommand}" CommandParameter="{Binding .}" />
+                                <Button Grid.Column="4" Text="Artefactos" Padding="9,5" Command="{Binding Source={RelativeSource AncestorType={x:Type vm:ProjectsPageViewModel}}, Path=ArtifactsCommand}" CommandParameter="{Binding .}" />
+                            </Grid>
+                        </Grid>
+                    </Border>
+                </DataTemplate>
+            </CollectionView.ItemTemplate>
+        </CollectionView>
+        <Label Grid.Row="3" Text="{Binding StatusMessage}" TextColor="#93C5FD" FontSize="12" />
+    </Grid>
+</ContentPage>

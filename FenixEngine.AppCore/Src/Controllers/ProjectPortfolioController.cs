@@ -50,7 +50,7 @@ public sealed class CloudServiceSetting
 public sealed class LocalAgentSetting
 {
     public string Name { get; set; } = string.Empty;
-    public string Endpoint { get; set; } = "http://127.0.0.1:11434";
+    public string Endpoint { get; set; } = string.Empty;
     public bool Enabled { get; set; }
 }
 

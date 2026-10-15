@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:vm="clr-namespace:FenixEngine.UI.ModelView"
+             xmlns:models="clr-namespace:FenixEngine.UI.ModelView"
+             x:Class="FenixEngine.UI.ProjectCreatePage"
+             x:DataType="vm:ProjectCreatePageViewModel"
+             Title="Proyecto de desarrollo"
+             BackgroundColor="#0B1120">
+    <Grid Padding="16" RowDefinitions="Auto,*,Auto,150,Auto" RowSpacing="8">
+        <Label Text="{Binding PageTitle}" FontSize="22" FontAttributes="Bold" TextColor="#F8FAFC" />
+        <ScrollView Grid.Row="1">
+            <VerticalStackLayout Spacing="9">
+                <Entry Placeholder="Nombre *" Text="{Binding Name}" TextColor="#F8FAFC" PlaceholderColor="#94A3B8" BackgroundColor="#1F2937" />
+                <Editor Placeholder="Descripción *" Text="{Binding Description}" AutoSize="TextChanges" MinimumHeightRequest="62" TextColor="#F8FAFC" PlaceholderColor="#94A3B8" BackgroundColor="#1F2937" />
+                <Editor Placeholder="Objetivo de negocio" Text="{Binding BusinessGoal}" AutoSize="TextChanges" MinimumHeightRequest="54" TextColor="#F8FAFC" PlaceholderColor="#94A3B8" BackgroundColor="#1F2937" />
+                <Editor Placeholder="Requerimientos funcionales" Text="{Binding FunctionalRequirements}" AutoSize="TextChanges" MinimumHeightRequest="72" TextColor="#F8FAFC" PlaceholderColor="#94A3B8" BackgroundColor="#1F2937" />
+                <Editor Placeholder="Requerimientos no funcionales" Text="{Binding NonFunctionalRequirements}" AutoSize="TextChanges" MinimumHeightRequest="72" TextColor="#F8FAFC" PlaceholderColor="#94A3B8" BackgroundColor="#1F2937" />
+                <Grid ColumnDefinitions="*,*" ColumnSpacing="8">
+                    <Entry Placeholder="Arquitectura objetivo" Text="{Binding ArchitectureStyle}" TextColor="#F8FAFC" PlaceholderColor="#94A3B8" BackgroundColor="#1F2937" />
+                    <Entry Grid.Column="1" Placeholder="Stack tecnológico" Text="{Binding TechnologyStack}" TextColor="#F8FAFC" PlaceholderColor="#94A3B8" BackgroundColor="#1F2937" />
+                </Grid>
+                <Grid ColumnDefinitions="*,Auto" ColumnSpacing="8">
+                    <Picker Title="Estado" ItemsSource="{Binding Statuses}" SelectedItem="{Binding Status}" TextColor="#F8FAFC" />
+                    <HorizontalStackLayout Grid.Column="1" Spacing="4"><Switch IsToggled="{Binding IsActive}" /><Label Text="Activo" TextColor="#E2E8F0" VerticalOptions="Center" /></HorizontalStackLayout>
+                </Grid>
+            </VerticalStackLayout>
+        </ScrollView>
+        <Label Grid.Row="2" Text="Equipos IA asignados (selecciona al menos uno)" TextColor="#CBD5E1" FontAttributes="Bold" />
+        <CollectionView Grid.Row="3" ItemsSource="{Binding Teams}" SelectionMode="None">
+            <CollectionView.EmptyView><Label Text="Primero registra equipos en AI Ecosystem." TextColor="#FCA5A5" /></CollectionView.EmptyView>
+            <CollectionView.ItemTemplate>
+                <DataTemplate x:DataType="models:ProjectTeamSelectionViewModel">
+                    <Grid ColumnDefinitions="Auto,*,Auto" Padding="3">
+                        <CheckBox IsChecked="{Binding IsSelected}" />
+                        <Label Grid.Column="1" Text="{Binding Name}" TextColor="#F8FAFC" VerticalOptions="Center" />
+                        <Label Grid.Column="2" Text="{Binding AgentSummary}" TextColor="#94A3B8" FontSize="11" VerticalOptions="Center" />
+                    </Grid>
+                </DataTemplate>
+            </CollectionView.ItemTemplate>
+        </CollectionView>
+        <Grid Grid.Row="4" ColumnDefinitions="*,Auto" ColumnSpacing="8">
+            <Label Text="{Binding StatusMessage}" TextColor="#FCA5A5" FontSize="12" VerticalOptions="Center" />
+            <Button Grid.Column="1" Text="Guardar proyecto" Command="{Binding SaveCommand}" />
+        </Grid>
+    </Grid>
+</ContentPage>

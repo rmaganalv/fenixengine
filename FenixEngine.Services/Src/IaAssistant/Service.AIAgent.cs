@@ -78,12 +78,12 @@ public class AIAgentService : IAIAgentService
                     }
                 }
             }
-            return modelsList.Count > 0 ? modelsList : new List<string> { options.SelectedModel };
+            return modelsList;
         }
         catch
         {
             // Fallback en caso de que el endpoint /models de la API no esté expuesto
-            return new List<string> { options.SelectedModel, "gpt-4o", "claude-3-5-sonnet", "llama3" };
+            return new List<string>();
         }
     }
 }

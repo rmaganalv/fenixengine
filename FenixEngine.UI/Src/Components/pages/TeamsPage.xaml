@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:vm="clr-namespace:FenixEngine.UI.ModelView"
+             xmlns:models="clr-namespace:FenixEngine.AppCore.Src.Models;assembly=FenixEngine.AppCore"
+             x:Class="FenixEngine.UI.TeamsPage"
+             x:DataType="vm:TeamsPageViewModel"
+             Title="Equipos IA"
+             BackgroundColor="#0B1120">
+    <Grid Padding="16" RowDefinitions="Auto,Auto,*,*,Auto" RowSpacing="8">
+        <Grid ColumnDefinitions="*,Auto">
+            <Label Text="Equipos de agentes" FontSize="22" FontAttributes="Bold" TextColor="#F8FAFC" VerticalOptions="Center" />
+            <Button Grid.Column="1" Text="Nuevo" Command="{Binding NewCommand}" />
+        </Grid>
+        <VerticalStackLayout Grid.Row="1" Spacing="6">
+            <Entry Placeholder="Nombre del equipo" Text="{Binding Name}" TextColor="#F8FAFC" PlaceholderColor="#94A3B8" BackgroundColor="#1F2937" />
+            <Grid ColumnDefinitions="*,Auto,Auto" ColumnSpacing="8">
+                <Entry Placeholder="Descripción" Text="{Binding Description}" TextColor="#F8FAFC" PlaceholderColor="#94A3B8" BackgroundColor="#1F2937" />
+                <Button Grid.Column="1" Text="Guardar" Command="{Binding SaveCommand}" />
+                <Button Grid.Column="2" Text="Eliminar" Command="{Binding DeleteCommand}" BackgroundColor="#7F1D1D" />
+            </Grid>
+        </VerticalStackLayout>
+        <CollectionView Grid.Row="2" ItemsSource="{Binding AvailableAgents}" SelectionMode="None">
+            <CollectionView.Header><Label Text="Agentes disponibles" TextColor="#CBD5E1" FontAttributes="Bold" /></CollectionView.Header>
+            <CollectionView.EmptyView><Label Text="Primero crea un agente habilitado." TextColor="#94A3B8" /></CollectionView.EmptyView>
+            <CollectionView.ItemTemplate>
+                <DataTemplate x:DataType="vm:AgentMembershipOption">
+                    <Grid ColumnDefinitions="Auto,*,Auto" Padding="3">
+                        <CheckBox IsChecked="{Binding IsSelected}" />
+                        <Label Grid.Column="1" Text="{Binding Name}" TextColor="#F8FAFC" VerticalOptions="Center" />
+                        <Label Grid.Column="2" Text="{Binding Role}" TextColor="#94A3B8" FontSize="12" VerticalOptions="Center" />
+                    </Grid>
+                </DataTemplate>
+            </CollectionView.ItemTemplate>
+        </CollectionView>
+        <CollectionView Grid.Row="3" ItemsSource="{Binding Teams}" SelectedItem="{Binding SelectedTeam, Mode=TwoWay}" SelectionMode="Single">
+            <CollectionView.Header><Label Text="Equipos registrados" TextColor="#CBD5E1" FontAttributes="Bold" /></CollectionView.Header>
+            <CollectionView.EmptyView><Label Text="No hay equipos registrados." TextColor="#94A3B8" /></CollectionView.EmptyView>
+            <CollectionView.ItemTemplate>
+                <DataTemplate x:DataType="models:AgentTeamDto">
+                    <Border Margin="0,3" Padding="9" Stroke="#334155" StrokeThickness="1" BackgroundColor="#111827" StrokeShape="RoundRectangle 6">
+                        <VerticalStackLayout Spacing="2">
+                            <Label Text="{Binding Name}" TextColor="#F8FAFC" FontAttributes="Bold" />
+                            <Label Text="{Binding AgentNames, StringFormat='Agentes: {0}'}" TextColor="#CBD5E1" FontSize="12" />
+                        </VerticalStackLayout>
+                    </Border>
+                </DataTemplate>
+            </CollectionView.ItemTemplate>
+        </CollectionView>
+        <Label Grid.Row="4" Text="{Binding StatusMessage}" TextColor="#93C5FD" FontSize="12" />
+    </Grid>
+</ContentPage>

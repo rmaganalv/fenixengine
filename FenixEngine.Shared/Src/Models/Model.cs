@@ -189,4 +189,175 @@ namespace FenixEngine.Shared.Src.Models
         public DateTime UpdatedAt { get; set; } = DateTime.UtcNow;
     }
 
+    public class AiProvider
+    {
+        [Key]
+        public string Id { get; init; } = Guid.NewGuid().ToString();
+
+        [Required, MaxLength(120)]
+        public string Name { get; set; } = string.Empty;
+
+        [Required, MaxLength(40)]
+        public string ProviderType { get; set; } = string.Empty;
+
+        [Required, MaxLength(500)]
+        public string BaseUrl { get; set; } = string.Empty;
+
+        public bool IsLocal { get; set; }
+        public bool IsEnabled { get; set; } = true;
+        public DateTime CreatedAt { get; init; } = DateTime.UtcNow;
+        public DateTime UpdatedAt { get; set; } = DateTime.UtcNow;
+        public ICollection<LlmModel> Models { get; set; } = new List<LlmModel>();
+    }
+
+    public class LlmModel
+    {
+        [Key]
+        public string Id { get; init; } = Guid.NewGuid().ToString();
+
+        [Required]
+        public string ProviderId { get; set; } = string.Empty;
+
+        [Required, MaxLength(160)]
+        public string Name { get; set; } = string.Empty;
+
+        [Required, MaxLength(240)]
+        public string ModelIdentifier { get; set; } = string.Empty;
+
+        public int? ContextWindow { get; set; }
+        public bool IsEnabled { get; set; } = true;
+        public AiProvider? Provider { get; set; }
+        public ICollection<AiAgent> Agents { get; set; } = new List<AiAgent>();
+    }
+
+    public class AiAgent
+    {
+        [Key]
+        public string Id { get; init; } = Guid.NewGuid().ToString();
+
+        [Required, MaxLength(120)]
+        public string Name { get; set; } = string.Empty;
+
+        [MaxLength(1000)]
+        public string Description { get; set; } = string.Empty;
+
+        [Required, MaxLength(100)]
+        public string Role { get; set; } = string.Empty;
+
+        [Required]
+        public string ModelId { get; set; } = string.Empty;
+
+        [Required]
+        public string SystemPrompt { get; set; } = string.Empty;
+
+        public bool IsEnabled { get; set; } = true;
+        public LlmModel? Model { get; set; }
+        public ICollection<AgentTeamMember> TeamMembers { get; set; } = new List<AgentTeamMember>();
+    }
+
+    public class AgentTeam
+    {
+        [Key]
+        public string Id { get; init; } = Guid.NewGuid().ToString();
+
+        [Required, MaxLength(120)]
+        public string Name { get; set; } = string.Empty;
+
+        [MaxLength(1000)]
+        public string Description { get; set; } = string.Empty;
+
+        public ICollection<AgentTeamMember> Members { get; set; } = new List<AgentTeamMember>();
+    }
+
+    public class AgentTeamMember
+    {
+        public string TeamId { get; set; } = string.Empty;
+        public string AgentId { get; set; } = string.Empty;
+        public AgentTeam? Team { get; set; }
+        public AiAgent? Agent { get; set; }
+    }
+
+    public enum ProjectStatus
+    {
+        Draft,
+        Analysis,
+        Architecture,
+        ReadyForGeneration,
+        Generating,
+        Completed,
+        Archived
+    }
+
+    public enum ArtifactType
+    {
+        Requirement,
+        UseCase,
+        Architecture,
+        Backlog,
+        Document,
+        SourceCode,
+        Test,
+        Deployment
+    }
+
+    public class DevelopmentProject
+    {
+        [Key]
+        public string Id { get; init; } = Guid.NewGuid().ToString();
+
+        [Required, MaxLength(160)]
+        public string Name { get; set; } = string.Empty;
+
+        [Required, MaxLength(4000)]
+        public string Description { get; set; } = string.Empty;
+
+        [MaxLength(4000)]
+        public string BusinessGoal { get; set; } = string.Empty;
+
+        public string FunctionalRequirements { get; set; } = string.Empty;
+        public string NonFunctionalRequirements { get; set; } = string.Empty;
+
+        [MaxLength(160)]
+        public string ArchitectureStyle { get; set; } = string.Empty;
+
+        public string TechnologyStack { get; set; } = string.Empty;
+        public ProjectStatus Status { get; set; } = ProjectStatus.Draft;
+        public DateTime CreatedAt { get; init; } = DateTime.UtcNow;
+        public DateTime UpdatedAt { get; set; } = DateTime.UtcNow;
+        public bool IsActive { get; set; } = true;
+        public ICollection<DevelopmentProjectTeam> TeamAssignments { get; set; } = new List<DevelopmentProjectTeam>();
+        public ICollection<ProjectArtifact> Artifacts { get; set; } = new List<ProjectArtifact>();
+    }
+
+    public class DevelopmentProjectTeam
+    {
+        public string ProjectId { get; set; } = string.Empty;
+        public string TeamId { get; set; } = string.Empty;
+        public DevelopmentProject? Project { get; set; }
+        public AgentTeam? Team { get; set; }
+    }
+
+    public class ProjectArtifact
+    {
+        [Key]
+        public string Id { get; init; } = Guid.NewGuid().ToString();
+
+        [Required]
+        public string ProjectId { get; set; } = string.Empty;
+
+        public ArtifactType ArtifactType { get; set; }
+
+        [Required, MaxLength(200)]
+        public string Title { get; set; } = string.Empty;
+
+        [MaxLength(2000)]
+        public string Description { get; set; } = string.Empty;
+
+        [MaxLength(1000)]
+        public string FilePath { get; set; } = string.Empty;
+
+        public DateTime CreatedAt { get; init; } = DateTime.UtcNow;
+        public DevelopmentProject? Project { get; set; }
+    }
+
 }

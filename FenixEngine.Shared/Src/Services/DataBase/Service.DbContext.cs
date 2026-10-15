@@ -15,7 +15,6 @@
 
 using Microsoft.EntityFrameworkCore;
 using FenixEngine.Shared.Src.Models;
-using Microsoft.Maui.Storage;
 
 
 namespace FenixEngine.Shared.Src.Services.DataBase
@@ -30,19 +29,18 @@ namespace FenixEngine.Shared.Src.Services.DataBase
         public DbSet<ProjectTask> ProjectTasks { get; set; } = null!;
         public DbSet<AiApiToken> AiApiTokens { get; set; } = null!;
         public DbSet<LocalAgentConfiguration> LocalAgentConfigurations { get; set; } = null!;
+        public DbSet<AiProvider> AiProviders { get; set; } = null!;
+        public DbSet<LlmModel> LlmModels { get; set; } = null!;
+        public DbSet<AiAgent> AiAgents { get; set; } = null!;
+        public DbSet<AgentTeam> AgentTeams { get; set; } = null!;
+        public DbSet<AgentTeamMember> AgentTeamMembers { get; set; } = null!;
+        public DbSet<DevelopmentProject> DevelopmentProjects { get; set; } = null!;
+        public DbSet<DevelopmentProjectTeam> DevelopmentProjectTeams { get; set; } = null!;
+        public DbSet<ProjectArtifact> ProjectArtifacts { get; set; } = null!;
 
         // Constructor para soportar Inyección de Dependencias
         public ServiceDbContext(DbContextOptions<ServiceDbContext> options) : base(options)
         {
-        }
-
-        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-        {
-            if (!optionsBuilder.IsConfigured)
-            {
-                string databasePath = Path.Combine(FileSystem.AppDataDirectory, "fenix-engine.db3");
-                optionsBuilder.UseSqlite($"Data Source={databasePath}");
-            }
         }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
@@ -51,6 +49,75 @@ namespace FenixEngine.Shared.Src.Services.DataBase
 
             modelBuilder.Entity<UserActivity>()
                 .HasKey(ua => ua.ActivityId);
+
+            modelBuilder.Entity<AiProvider>(entity =>
+            {
+                entity.HasIndex(provider => provider.Name).IsUnique();
+                entity.HasIndex(provider => provider.ProviderType);
+            });
+
+            modelBuilder.Entity<LlmModel>(entity =>
+            {
+                entity.HasIndex(model => new { model.ProviderId, model.ModelIdentifier }).IsUnique();
+                entity.HasOne(model => model.Provider)
+                    .WithMany(provider => provider.Models)
+                    .HasForeignKey(model => model.ProviderId)
+                    .OnDelete(DeleteBehavior.Restrict);
+            });
+
+            modelBuilder.Entity<AiAgent>(entity =>
+            {
+                entity.HasIndex(agent => agent.Name).IsUnique();
+                entity.HasOne(agent => agent.Model)
+                    .WithMany(model => model.Agents)
+                    .HasForeignKey(agent => agent.ModelId)
+                    .OnDelete(DeleteBehavior.Restrict);
+            });
+
+            modelBuilder.Entity<AgentTeam>(entity => entity.HasIndex(team => team.Name).IsUnique());
+
+            modelBuilder.Entity<AgentTeamMember>(entity =>
+            {
+                entity.HasKey(member => new { member.TeamId, member.AgentId });
+                entity.HasOne(member => member.Team)
+                    .WithMany(team => team.Members)
+                    .HasForeignKey(member => member.TeamId)
+                    .OnDelete(DeleteBehavior.Cascade);
+                entity.HasOne(member => member.Agent)
+                    .WithMany(agent => agent.TeamMembers)
+                    .HasForeignKey(member => member.AgentId)
+                    .OnDelete(DeleteBehavior.Cascade);
+            });
+
+            modelBuilder.Entity<DevelopmentProject>(entity =>
+            {
+                entity.Property(project => project.Name).UseCollation("NOCASE");
+                entity.HasIndex(project => project.Name).IsUnique();
+                entity.HasIndex(project => project.Status);
+                entity.HasIndex(project => project.IsActive);
+            });
+
+            modelBuilder.Entity<DevelopmentProjectTeam>(entity =>
+            {
+                entity.HasKey(assignment => new { assignment.ProjectId, assignment.TeamId });
+                entity.HasOne(assignment => assignment.Project)
+                    .WithMany(project => project.TeamAssignments)
+                    .HasForeignKey(assignment => assignment.ProjectId)
+                    .OnDelete(DeleteBehavior.Cascade);
+                entity.HasOne(assignment => assignment.Team)
+                    .WithMany()
+                    .HasForeignKey(assignment => assignment.TeamId)
+                    .OnDelete(DeleteBehavior.Cascade);
+            });
+
+            modelBuilder.Entity<ProjectArtifact>(entity =>
+            {
+                entity.HasIndex(artifact => new { artifact.ProjectId, artifact.CreatedAt });
+                entity.HasOne(artifact => artifact.Project)
+                    .WithMany(project => project.Artifacts)
+                    .HasForeignKey(artifact => artifact.ProjectId)
+                    .OnDelete(DeleteBehavior.Cascade);
+            });
 
             modelBuilder.Entity<ProyectType>().HasData(
                 new ProyectType { PTypeId = "type-local", PTypeName = "Local", PTypeCreation = new DateTime(2026, 1, 1, 8, 0, 0, DateTimeKind.Utc) },

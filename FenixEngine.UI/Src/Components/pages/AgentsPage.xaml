@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:vm="clr-namespace:FenixEngine.UI.ModelView"
+             xmlns:models="clr-namespace:FenixEngine.AppCore.Src.Models;assembly=FenixEngine.AppCore"
+             x:Class="FenixEngine.UI.AgentsPage"
+             x:DataType="vm:AgentsPageViewModel"
+             Title="Agentes IA"
+             BackgroundColor="#0B1120">
+    <Grid Padding="16" RowDefinitions="Auto,Auto,*,Auto" RowSpacing="9">
+        <Grid ColumnDefinitions="*,Auto">
+            <Label Text="Agentes IA" FontSize="22" FontAttributes="Bold" TextColor="#F8FAFC" VerticalOptions="Center" />
+            <Button Grid.Column="1" Text="Nuevo" Command="{Binding NewCommand}" />
+        </Grid>
+        <VerticalStackLayout Grid.Row="1" Spacing="6">
+            <Grid ColumnDefinitions="*,*" ColumnSpacing="8">
+                <Entry Placeholder="Nombre" Text="{Binding Name}" TextColor="#F8FAFC" PlaceholderColor="#94A3B8" BackgroundColor="#1F2937" />
+                <Entry Grid.Column="1" Placeholder="Rol" Text="{Binding Role}" TextColor="#F8FAFC" PlaceholderColor="#94A3B8" BackgroundColor="#1F2937" />
+            </Grid>
+            <Entry Placeholder="Descripción" Text="{Binding Description}" TextColor="#F8FAFC" PlaceholderColor="#94A3B8" BackgroundColor="#1F2937" />
+            <Picker Title="Modelo habilitado" ItemsSource="{Binding Models}" ItemDisplayBinding="{Binding Name}" SelectedItem="{Binding SelectedModel}" TextColor="#F8FAFC" />
+            <Editor Placeholder="Prompt de sistema" Text="{Binding SystemPrompt}" HeightRequest="82" AutoSize="TextChanges" TextColor="#F8FAFC" PlaceholderColor="#94A3B8" BackgroundColor="#1F2937" />
+            <Grid ColumnDefinitions="Auto,*,Auto,Auto">
+                <Switch IsToggled="{Binding IsEnabled}" />
+                <Label Grid.Column="1" Text="Agente habilitado" TextColor="#E2E8F0" VerticalOptions="Center" />
+                <Button Grid.Column="2" Text="Guardar" Command="{Binding SaveCommand}" />
+                <Button Grid.Column="3" Text="Eliminar" Command="{Binding DeleteCommand}" BackgroundColor="#7F1D1D" />
+            </Grid>
+        </VerticalStackLayout>
+        <CollectionView Grid.Row="2" ItemsSource="{Binding Agents}" SelectedItem="{Binding SelectedAgent, Mode=TwoWay}" SelectionMode="Single">
+            <CollectionView.EmptyView><Label Text="Crea agentes a partir de modelos habilitados." TextColor="#94A3B8" VerticalOptions="Center" HorizontalOptions="Center" /></CollectionView.EmptyView>
+            <CollectionView.ItemTemplate>
+                <DataTemplate x:DataType="models:AiAgentDto">
+                    <Border Margin="0,3" Padding="10" Stroke="#334155" StrokeThickness="1" BackgroundColor="#111827" StrokeShape="RoundRectangle 6">
+                        <Grid ColumnDefinitions="*,Auto">
+                            <VerticalStackLayout Spacing="2">
+                                <Label Text="{Binding Name}" TextColor="#F8FAFC" FontAttributes="Bold" />
+                                <Label Text="{Binding Role, StringFormat='Rol: {0}'}" TextColor="#CBD5E1" FontSize="12" />
+                                <Label Text="{Binding ModelName, StringFormat='Modelo: {0}'}" TextColor="#94A3B8" FontSize="12" />
+                            </VerticalStackLayout>
+                            <Label Grid.Column="1" Text="{Binding IsEnabled, StringFormat='Activo: {0}'}" TextColor="#86EFAC" FontSize="12" VerticalOptions="Center" />
+                        </Grid>
+                    </Border>
+                </DataTemplate>
+            </CollectionView.ItemTemplate>
+        </CollectionView>
+        <Label Grid.Row="3" Text="{Binding StatusMessage}" TextColor="#93C5FD" FontSize="12" />
+    </Grid>
+</ContentPage>

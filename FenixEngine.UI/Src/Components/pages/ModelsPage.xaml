@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:vm="clr-namespace:FenixEngine.UI.ModelView"
+             xmlns:models="clr-namespace:FenixEngine.AppCore.Src.Models;assembly=FenixEngine.AppCore"
+             x:Class="FenixEngine.UI.ModelsPage"
+             x:DataType="vm:ModelsPageViewModel"
+             Title="Modelos"
+             BackgroundColor="#0B1120">
+    <Grid Padding="16" RowDefinitions="Auto,Auto,*,Auto" RowSpacing="10">
+        <Grid ColumnDefinitions="*,Auto">
+            <Label Text="Catálogo de modelos" FontSize="22" FontAttributes="Bold" TextColor="#F8FAFC" VerticalOptions="Center" />
+            <Button Grid.Column="1" Text="Nuevo" Command="{Binding NewCommand}" />
+        </Grid>
+        <VerticalStackLayout Grid.Row="1" Spacing="7">
+            <Picker Title="Proveedor" ItemsSource="{Binding Providers}" ItemDisplayBinding="{Binding Name}" SelectedItem="{Binding SelectedProvider}" TextColor="#F8FAFC" />
+            <Grid ColumnDefinitions="*,*" ColumnSpacing="8">
+                <Entry Placeholder="Nombre visible" Text="{Binding Name}" TextColor="#F8FAFC" PlaceholderColor="#94A3B8" BackgroundColor="#1F2937" />
+                <Entry Grid.Column="1" Placeholder="Identificador API" Text="{Binding ModelIdentifier}" TextColor="#F8FAFC" PlaceholderColor="#94A3B8" BackgroundColor="#1F2937" />
+            </Grid>
+            <Grid ColumnDefinitions="*,Auto,Auto" ColumnSpacing="8">
+                <Entry Placeholder="Ventana de contexto (opcional)" Keyboard="Numeric" Text="{Binding ContextWindow}" TextColor="#F8FAFC" PlaceholderColor="#94A3B8" BackgroundColor="#1F2937" />
+                <HorizontalStackLayout Grid.Column="1" Spacing="4"><Switch IsToggled="{Binding IsEnabled}" /><Label Text="Habilitado" TextColor="#E2E8F0" VerticalOptions="Center" /></HorizontalStackLayout>
+                <Button Grid.Column="2" Text="Sincronizar" Command="{Binding SynchronizeCommand}" />
+            </Grid>
+            <HorizontalStackLayout Spacing="8">
+                <Button Text="Guardar modelo" Command="{Binding SaveCommand}" />
+                <Button Text="Eliminar" Command="{Binding DeleteCommand}" BackgroundColor="#7F1D1D" />
+            </HorizontalStackLayout>
+        </VerticalStackLayout>
+        <CollectionView Grid.Row="2" ItemsSource="{Binding Models}" SelectedItem="{Binding SelectedModel, Mode=TwoWay}" SelectionMode="Single">
+            <CollectionView.EmptyView><Label Text="No hay modelos para este proveedor." TextColor="#94A3B8" VerticalOptions="Center" HorizontalOptions="Center" /></CollectionView.EmptyView>
+            <CollectionView.ItemTemplate>
+                <DataTemplate x:DataType="models:LlmModelDto">
+                    <Border Margin="0,3" Padding="10" Stroke="#334155" StrokeThickness="1" BackgroundColor="#111827" StrokeShape="RoundRectangle 6">
+                        <Grid ColumnDefinitions="*,Auto">
+                            <VerticalStackLayout Spacing="2">
+                                <Label Text="{Binding Name}" TextColor="#F8FAFC" FontAttributes="Bold" />
+                                <Label Text="{Binding ModelIdentifier}" TextColor="#CBD5E1" FontSize="12" />
+                                <Label Text="{Binding ProviderName}" TextColor="#94A3B8" FontSize="12" />
+                            </VerticalStackLayout>
+                            <Label Grid.Column="1" Text="{Binding IsEnabled, StringFormat='Habilitado: {0}'}" TextColor="#86EFAC" FontSize="12" VerticalOptions="Center" />
+                        </Grid>
+                    </Border>
+                </DataTemplate>
+            </CollectionView.ItemTemplate>
+        </CollectionView>
+        <Label Grid.Row="3" Text="{Binding StatusMessage}" TextColor="#93C5FD" FontSize="12" />
+    </Grid>
+</ContentPage>
