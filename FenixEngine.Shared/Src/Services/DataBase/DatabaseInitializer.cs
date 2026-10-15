@@ -11,6 +11,7 @@ public static class DatabaseInitializer
     {
         dbContext.Database.EnsureDeleted();
         dbContext.Database.EnsureCreated();
+        dbContext.Database.Migrate();
     }
 
     public static void Initialize(ServiceDbContext dbContext)
@@ -69,6 +70,9 @@ public static class DatabaseInitializer
                  'cdded2397c42dda1e1f9cf3881f12bad2311d1c78735d052951a644da4fb0d07',
                  '1988-08-07 00:00:00', '2026-01-01 08:00:00', NULL);
             """);
+
+        connection.Close();
+        dbContext.Database.Migrate();
     }
 
     private static void EnsureColumn(System.Data.Common.DbConnection connection, string tableName, string columnName, string definition)

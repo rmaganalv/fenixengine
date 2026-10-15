@@ -1,6 +1,7 @@
 <Solution>
   <Project Path="FenixEngine.AppCore/FenixEngine.AppCore.csproj" />
+  <Project Path="FenixEngine.Migrations.DesignHost/FenixEngine.Migrations.DesignHost.csproj" />
   <Project Path="FenixEngine.Services/FenixEngine.Services.csproj" />
   <Project Path="FenixEngine.Shared/FenixEngine.Shared.csproj" />
-  <Project Path="FenixEngine/FenixEngine.csproj" />
+  <Project Path="FenixEngine.UI/FenixEngine.UI.csproj" />
 </Solution>

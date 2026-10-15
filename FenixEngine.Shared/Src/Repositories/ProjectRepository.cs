@@ -40,6 +40,43 @@ public interface ISettingsRepository
     Task UpdateLocalAgentAsync(LocalAgentConfiguration agent, CancellationToken cancellationToken = default);
 }
 
+public interface IAiProviderRepository
+{
+    Task<List<AiProvider>> GetAllAsync(CancellationToken cancellationToken = default);
+    Task<AiProvider?> GetByIdAsync(string id, CancellationToken cancellationToken = default);
+    Task AddAsync(AiProvider provider, CancellationToken cancellationToken = default);
+    Task UpdateAsync(AiProvider provider, CancellationToken cancellationToken = default);
+    Task DeleteAsync(string id, CancellationToken cancellationToken = default);
+}
+
+public interface ILlmModelRepository
+{
+    Task<List<LlmModel>> GetAllAsync(CancellationToken cancellationToken = default);
+    Task<List<LlmModel>> GetByProviderAsync(string providerId, CancellationToken cancellationToken = default);
+    Task<LlmModel?> GetByIdAsync(string id, CancellationToken cancellationToken = default);
+    Task AddAsync(LlmModel model, CancellationToken cancellationToken = default);
+    Task UpdateAsync(LlmModel model, CancellationToken cancellationToken = default);
+    Task DeleteAsync(string id, CancellationToken cancellationToken = default);
+}
+
+public interface IAiAgentRepository
+{
+    Task<List<AiAgent>> GetAllAsync(CancellationToken cancellationToken = default);
+    Task<AiAgent?> GetByIdAsync(string id, CancellationToken cancellationToken = default);
+    Task AddAsync(AiAgent agent, CancellationToken cancellationToken = default);
+    Task UpdateAsync(AiAgent agent, CancellationToken cancellationToken = default);
+    Task DeleteAsync(string id, CancellationToken cancellationToken = default);
+}
+
+public interface IAgentTeamRepository
+{
+    Task<List<AgentTeam>> GetAllAsync(CancellationToken cancellationToken = default);
+    Task<AgentTeam?> GetByIdAsync(string id, CancellationToken cancellationToken = default);
+    Task AddAsync(AgentTeam team, IEnumerable<string> memberIds, CancellationToken cancellationToken = default);
+    Task UpdateAsync(AgentTeam team, IEnumerable<string> memberIds, CancellationToken cancellationToken = default);
+    Task DeleteAsync(string id, CancellationToken cancellationToken = default);
+}
+
 public sealed class ProjectRepository : IProjectRepository
 {
     private readonly ServiceDbContext _dbContext;

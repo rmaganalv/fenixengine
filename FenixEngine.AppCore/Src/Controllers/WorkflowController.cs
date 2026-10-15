@@ -1,4 +1,5 @@
 using FenixEngine.Services.Src.Workflow;
+using FenixEngine.Shared.Src.Models;
 
 // SPDX-License-Identifier: GPL-3.0-or-later
 // Copyright (C) 2026 Ruben Magaña Alvarado
@@ -42,7 +43,9 @@ public class WorkflowController
         string actionName,
         string prompt,
         string? projectName,
-        CancellationToken cancellationToken = default)
+        CancellationToken cancellationToken = default,
+        AiProvider? provider = null,
+        string? modelIdentifier = null)
     {
         try
         {
@@ -51,7 +54,12 @@ public class WorkflowController
             if (actionName.Equals("rup", StringComparison.OrdinalIgnoreCase))
             {
                 CurrentState = WorkflowExecutionState.Generating;
-                await _rupDocumentService.GenerateDocumentAsync(projectName ?? "General", prompt, cancellationToken);
+                await _rupDocumentService.GenerateDocumentAsync(
+                    provider ?? throw new InvalidOperationException("Selecciona un proveedor IA."),
+                    modelIdentifier ?? throw new InvalidOperationException("Selecciona un modelo IA."),
+                    projectName ?? "General",
+                    prompt,
+                    cancellationToken);
             }
             else if (actionName.Equals("architecture", StringComparison.OrdinalIgnoreCase))
             {
@@ -65,7 +73,12 @@ public class WorkflowController
             else
             {
                 CurrentState = WorkflowExecutionState.Generating;
-                await _promptExecutionService.ExecutePromptAsync(prompt, projectName, cancellationToken);
+                await _promptExecutionService.ExecutePromptAsync(
+                    provider ?? throw new InvalidOperationException("Selecciona un proveedor IA."),
+                    modelIdentifier ?? throw new InvalidOperationException("Selecciona un modelo IA."),
+                    prompt,
+                    projectName,
+                    cancellationToken);
             }
 
             CurrentState = WorkflowExecutionState.Validating;

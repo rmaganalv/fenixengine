@@ -39,6 +39,10 @@ public static class SharedExtension
         builder.Services.AddScoped<ITaskRepository, TaskRepository>();
         builder.Services.AddScoped<IUserRepository, UserRepository>();
         builder.Services.AddScoped<ISettingsRepository, SettingsRepository>();
+        builder.Services.AddScoped<IAiProviderRepository, AiProviderRepository>();
+        builder.Services.AddScoped<ILlmModelRepository, LlmModelRepository>();
+        builder.Services.AddScoped<IAiAgentRepository, AiAgentRepository>();
+        builder.Services.AddScoped<IAgentTeamRepository, AgentTeamRepository>();
 
 
         return builder;

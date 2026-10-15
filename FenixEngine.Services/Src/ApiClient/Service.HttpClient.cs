@@ -54,16 +54,26 @@ public class HttpClientService : IHttpClientService
                 request.Headers.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", apiKey);
             }
 
-            // Al usar GetAsync directo se evita la inicialización perezosa de sockets en GET
-            var response = await _httpClient.GetAsync(url);
-            response.EnsureSuccessStatusCode();
-
-            var json = await response.Content.ReadAsStringAsync();
+            var json = await SendAsync(request);
             return JsonSerializer.Deserialize<T>(json, new JsonSerializerOptions { PropertyNameCaseInsensitive = true });
         }
         catch (Exception ex)
         {
             throw new Exception($"Error en GET ({url}): {ex.Message}", ex);
+        }
+    }
+
+    public async Task<string> SendAsync(HttpRequestMessage request, CancellationToken cancellationToken = default)
+    {
+        try
+        {
+            using var response = await _httpClient.SendAsync(request, cancellationToken);
+            response.EnsureSuccessStatusCode();
+            return await response.Content.ReadAsStringAsync(cancellationToken);
+        }
+        catch (Exception ex)
+        {
+            throw new HttpRequestException($"Error en solicitud HTTP: {ex.Message}", ex);
         }
     }
 }
